@@ -1,0 +1,23 @@
+
+[WEB6128]
+type   = web
+model  = 6128
+run    = run"MAIN.BAS"
+
+[CPC6128]
+type   = desktop
+model  = 6128
+run    = run"MAIN.BAS"
+path   =
+
+[CPC464]
+type   = desktop
+model  = 464
+run    = run""
+path   =
+
+[m4board]
+## There must be a folder called /tmp on the M4 Board
+ip      = 0.0.0.0
+execute = MAIN.BAS
+folder  = {{ name }}
