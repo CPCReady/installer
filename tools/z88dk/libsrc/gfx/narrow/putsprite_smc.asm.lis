@@ -1,0 +1,132 @@
+/tmp/tmpXXr70UHG.asm:
+     1                          MODULE putsprite_smc_asm
+     2                          LINE 0, "putsprite_smc.asm"
+putsprite_smc.asm:
+                                
+     1                          ;
+     2                          ;
+     3                          ;     Generic graphics routines
+     4                          ;     Self modifying code version
+     5                          ;
+     6                          ;     Stefano Bodrato - 4/1/2007
+     7                          ;
+     8                          ;
+     9                          ;     Sprite Rendering Routine
+    10                          ;     original code by Patrick Davidson (TI 85)
+    11                          ;
+    12                          ;
+    13                          ;    $Id: putsprite_smc.asm,v 1.3 2016-07-02 09:01:35 dom Exp $
+    14                          ;
+    15                          
+    16                            IF    !__CPU_INTEL__&!__CPU_GBZ80__
+    17                                  SECTION smc_clib
+    18                          
+    19                                  PUBLIC  putsprite
+    20                                  PUBLIC  _putsprite
+    21                                  PUBLIC  ___putsprite
+    22                          
+    23                                  EXTERN  pixel
+    24                                  EXTERN  pixmode
+    25                          
+    26                          
+    27                          ; __gfx_coords: h,l (vert-horz)
+    28                          ; sprite: (ix)
+    29                          
+    30                          putsprite:
+    31                          _putsprite:
+    32                          ___putsprite:
+    33                          
+    34                                  ld      hl, 2
+    35                                  add     hl, sp
+    36                                  ld      e, (hl)
+    37                                  inc     hl
+    38                                  ld      d, (hl)                 ;sprite address
+    39                                  push    de
+    40                                  pop     ix
+    41                          
+    42                                  inc     hl
+    43                                  ld      e, (hl)
+    44                                  inc     hl
+    45                                  inc     hl
+    46                                  ld      d, (hl)                 ; x and y __gfx_coords
+    47                          
+    48                                  inc     hl
+    49                          
+    50                                ;inc    hl
+    51                                  ld      a, (hl)                 ; and/or/xor mode
+    52                                  inc     hl
+    53                                  ld      l, (hl)
+    54                                  ld      h, a
+    55                                  ld      (pixmode), hl
+    56                          
+    57                                  ld      h, d
+    58                                  ld      l, e
+    59                          
+    60                                  ld      a, (ix+0)               ; Width
+    61                                  ld      b, (ix+1)               ; Height
+    62                          oloop:  push    bc                      ;Save # of rows
+    63                                  push    af
+    64                          
+    65                              ;ld    b,a    ;Load width
+    66                                  ld      b, 0                    ; Better, start from zero !!
+    67                          
+    68                                  ld      c, (ix+2)               ;Load one line of image
+    69                          
+    70                          iloop:  sla     c                       ;Test leftmost pixel
+    71                                  jr      nc, noplot              ;See if a plot is needed
+    72                          
+    73                                  pop     af
+    74                                  push    af
+    75                          
+    76                                  push    hl
+    77                              ;push    bc    ; this should be done by the called routine
+    78                                  push    de
+    79                                  ld      a, h
+    80                                  add     a, b
+    81                                  ld      h, a
+    82                                  call    pixel
+    83                                  pop     de
+    84                              ;pop    bc
+    85                                  pop     hl
+    86                          
+    87                          noplot:
+    88                          
+    89                                  inc     b                       ; witdh counter
+    90                          
+    91                                  pop     af
+    92                                  push    af
+    93                          
+    94                                  cp      b                       ; end of row ?
+    95                          
+    96                                  jr      nz, noblk
+    97                          
+    98                                  inc     ix
+    99                                  ld      c, (ix+2)               ;Load next byte of image
+   100                          
+   101                                  jr      noblock
+   102                          
+   103                          noblk:
+   104                          
+   105                                  ld      a, b                    ; next byte in row ?
+   106                              ;dec    a
+   107                                  and     a
+   108                                  jr      z, iloop
+   109                                  and     7
+   110                          
+   111                                  jr      nz, iloop
+   112                          
+   113                          block:
+   114                                  inc     ix
+   115                                  ld      c, (ix+2)               ;Load next byte of image
+   116                                  jr      iloop
+   117                          
+   118                          noblock:
+   119                          
+   120                                  inc     l
+   121                          
+   122                                  pop     af
+   123                                  pop     bc                      ;Restore data
+   124                                  djnz    oloop
+   125                                  ret
+   126                            ENDIF
+   127                          

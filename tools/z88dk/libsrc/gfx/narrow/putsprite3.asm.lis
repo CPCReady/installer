@@ -1,0 +1,162 @@
+/tmp/tmpXXb0eMbC.asm:
+     1                          MODULE putsprite3_asm
+     2                          LINE 0, "putsprite3.asm"
+putsprite3.asm:
+                                
+     1                          ;
+     2                          ; Sprite Rendering Routine
+     3                          ; original code by Patrick Davidson (TI 85)
+     4                          ; modified by Stefano Bodrato - Jan 2001
+     5                          ;
+     6                          ; Sept 2003 - Stefano: Fixed bug for sprites wider than 8.
+     7                          ;
+     8                          ; Much More Generic version
+     9                          ; Uses plotpixel, respixel and xorpixel
+    10                          ;
+    11                          ; ** putsprite3 is a thin version with a Self Modifying Code trick **
+    12                          ;
+    13                          ;
+    14                          ; $Id: putsprite3.asm $
+    15                          ;
+    16                          
+    17                            IF    !__CPU_INTEL__&!__CPU_GBZ80__
+    18                                  SECTION smc_clib
+    19                          
+    20                                  PUBLIC  putsprite
+    21                                  PUBLIC  _putsprite
+    22                                  PUBLIC  ___putsprite
+    23                          
+    24                                  EXTERN  swapgfxbk
+    25                                  EXTERN  __graphics_end
+    26                          
+    27                                  EXTERN  plotpixel
+    28                                  EXTERN  respixel
+    29                                  EXTERN  xorpixel
+    30                                  INCLUDE "graphics/grafix.inc"
+    31                          
+    32                          ; __gfx_coords: h,l (vert-horz)
+    33                          ; sprite: (ix)
+    34                          
+    35                          putsprite:
+    36                          _putsprite:
+    37                          ___putsprite:
+    38                              IF  NEED_swapgfxbk=1
+    39                                  call    swapgfxbk
+    40                              ENDIF
+    41                                  ld      hl, 2
+    42                                  add     hl, sp
+    43                                  ld      e, (hl)
+    44                                  inc     hl
+    45                                  ld      d, (hl)                 ;sprite address
+    46                                  push    ix
+    47                                  push    de
+    48                                  pop     ix
+    49                          
+    50                                  inc     hl
+    51                                  ld      e, (hl)
+    52                                  inc     hl
+    53                                  inc     hl
+    54                                  ld      d, (hl)                 ; x and y __gfx_coords
+    55                          
+    56                                  inc     hl
+    57                          
+    58                                  inc     hl
+    59                                  ld      a, (hl)                 ; and/or/xor mode
+    60                          
+    61                                  cp      166                     ; and(hl) opcode
+    62                                  jr      nz, nodoand
+    63                                  ld      hl, respixel
+    64                                  ld      (called+1), hl
+    65                                  jr      doxor
+    66                          nodoand:
+    67                          
+    68                                  cp      182                     ; or(hl) opcode
+    69                                  jr      nz, nodoor
+    70                                  ld      hl, plotpixel
+    71                                  ld      (called+1), hl
+    72                                  jr      doxor
+    73                          
+    74                              ; 182 - or
+    75                              ; 174 - xor
+    76                          
+    77                          nodoor:
+    78                                  ld      hl, xorpixel
+    79                                  ld      (called+1), hl
+    80                          
+    81                          doxor:
+    82                                  ld      h, d
+    83                                  ld      l, e
+    84                          
+    85                                  ld      a, (ix+0)               ; Width
+    86                                  ld      b, (ix+1)               ; Height
+    87                          oloopx: push    bc                      ;Save # of rows
+    88                                  push    af
+    89                          
+    90                              ;ld    b,a    ;Load width
+    91                                  ld      b, 0                    ; Better, start from zero !!
+    92                          
+    93                                  ld      c, (ix+2)               ;Load one line of image
+    94                          
+    95                          iloopx: sla     c                       ;Test leftmost pixel
+    96                                  jr      nc, noplotx             ;See if a plot is needed
+    97                          
+    98                                  push    hl
+    99                              ;push    bc    ; this should be done by the called routine
+   100                                  push    de
+   101                                  ld      a, h
+   102                                  add     a, b
+   103                                  ld      h, a
+   104                          called:
+   105                                  call    xorpixel
+   106                                  pop     de
+   107                              ;pop    bc
+   108                                  pop     hl
+   109                          
+   110                          noplotx:
+   111                          
+   112                                  inc     b                       ; witdh counter
+   113                          
+   114                                  pop     af
+   115                                  push    af
+   116                          
+   117                                  cp      b                       ; end of row ?
+   118                          
+   119                                  jr      nz, noblkx
+   120                          
+   121                                  inc     ix
+   122                                  ld      c, (ix+2)               ;Load next byte of image
+   123                          
+   124                                  jr      noblockx
+   125                          
+   126                          noblkx:
+   127                          
+   128                                  ld      a, b                    ; next byte in row ?
+   129                              ;dec    a
+   130                                  and     a
+   131                                  jr      z, iloopx
+   132                                  and     7
+   133                          
+   134                                  jr      nz, iloopx
+   135                          
+   136                          blockx:
+   137                                  inc     ix
+   138                                  ld      c, (ix+2)               ;Load next byte of image
+   139                                  jr      iloopx
+   140                          
+   141                          noblockx:
+   142                          
+   143                                  inc     l
+   144                          
+   145                                  pop     af
+   146                                  pop     bc                      ;Restore data
+   147                                  djnz    oloopx
+   148                              IF  NEED_swapgfxbk
+   149                                  jp      __graphics_end
+   150                              ELSE
+   151                                IF    !__CPU_INTEL__&!__CPU_GBZ80__
+   152                                  pop     ix
+   153                                ENDIF
+   154                                  ret
+   155                              ENDIF
+   156                            ENDIF
+   157                          

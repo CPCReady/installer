@@ -1,0 +1,45 @@
+/tmp/tmpXXFoie0T.asm:
+     1                          MODULE xorborder_asm
+     2                          LINE 0, "xorborder.asm"
+xorborder.asm:
+                                
+     1                          
+     2                            IF    !__CPU_INTEL__&!__CPU_GBZ80__
+     3                                  SECTION code_graphics
+     4                          
+     5                                  PUBLIC  xorborder
+     6                                  PUBLIC  _xorborder
+     7                                  PUBLIC  ___xorborder
+     8                          
+     9                                  EXTERN  asm_xorborder
+    10                          
+    11                          ;
+    12                          ;    $Id: xorborder.asm $
+    13                          ;
+    14                          
+    15                          ; ***********************************************************************
+    16                          ;
+    17                          ; XORs a dotted box.  Useful for GUIs.
+    18                          ; Generic version
+    19                          ;
+    20                          ; Stefano Bodrato - March 2002
+    21                          ;
+    22                          ;
+    23                          ; IN:    HL    = (x,y)
+    24                          ;    BC    = (width,heigth)
+    25                          ;
+    26                          
+    27                          xorborder:
+    28                          _xorborder:
+    29                          ___xorborder:
+    30                                  push    ix
+    31                                  ld      ix, 2
+    32                                  add     ix, sp
+    33                                  ld      c, (ix+2)
+    34                                  ld      b, (ix+4)
+    35                                  ld      l, (ix+6)
+    36                                  ld      h, (ix+8)
+    37                                  pop     ix
+    38                                  jp      asm_xorborder
+    39                            ENDIF
+    40                          

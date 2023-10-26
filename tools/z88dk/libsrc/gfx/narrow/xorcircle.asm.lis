@@ -1,0 +1,33 @@
+/tmp/tmpXXZiKa8Z.asm:
+     1                          MODULE xorcircle_asm
+     2                          LINE 0, "xorcircle.asm"
+xorcircle.asm:
+                                
+     1                          ;
+     2                          ;     Z88 Graphics Functions - Small C+ stubs
+     3                          ; Usage: xorcircle(int x, int y, int radius, int skip);
+     4                          
+     5                          
+     6                            IF    !__CPU_INTEL__&!__CPU_GBZ80__
+     7                                  SECTION code_graphics
+     8                          
+     9                                  PUBLIC  xorcircle
+    10                                  PUBLIC  _xorcircle
+    11                                  PUBLIC  ___xorcircle
+    12                          
+    13                                  EXTERN  asm_xorcircle
+    14                          
+    15                          
+    16                          xorcircle:
+    17                          _xorcircle:
+    18                          ___xorcircle:
+    19                                  push    ix
+    20                                  ld      ix, 2
+    21                                  add     ix, sp
+    22                                  ld      e, (ix+2)               ;skip
+    23                                  ld      d, (ix+4)               ;radius
+    24                                  ld      c, (ix+6)               ;y
+    25                                  ld      b, (ix+8)               ;x
+    26                                  jp      asm_xorcircle
+    27                            ENDIF
+    28                          

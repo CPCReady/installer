@@ -1,0 +1,30 @@
+/tmp/tmpXXryaMlG.asm:
+     1                          MODULE fillb_asm
+     2                          LINE 0, "fillb.asm"
+fillb.asm:
+                                
+     1                          ;void fillb(int tlx, int tly, int width, int height)
+     2                          
+     3                            IF    !__CPU_INTEL__&!__CPU_GBZ80__
+     4                                  SECTION code_graphics
+     5                          
+     6                                  PUBLIC  fillb
+     7                                  PUBLIC  _fillb
+     8                                  PUBLIC  ___fillb
+     9                          
+    10                                  EXTERN  asm_fillb
+    11                          
+    12                          fillb:
+    13                          _fillb:
+    14                          ___fillb:
+    15                                  push    ix
+    16                                  ld      ix, 2
+    17                                  add     ix, sp
+    18                                  ld      c, (ix+2)
+    19                                  ld      b, (ix+4)
+    20                                  ld      l, (ix+6)
+    21                                  ld      h, (ix+8)
+    22                                  pop     ix
+    23                                  jp      asm_fillb
+    24                            ENDIF
+    25                          

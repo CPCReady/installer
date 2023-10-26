@@ -1,0 +1,30 @@
+/tmp/tmpXXxsKuRB.asm:
+     1                          MODULE xordrawb_asm
+     2                          LINE 0, "xordrawb.asm"
+xordrawb.asm:
+                                
+     1                          ; ----- void __CALLEE__ xordrawb(int x, int y, int h, int v)
+     2                          
+     3                            IF    !__CPU_INTEL__&!__CPU_GBZ80__
+     4                                  SECTION code_graphics
+     5                          
+     6                                  PUBLIC  xordrawb
+     7                                  PUBLIC  _xordrawb
+     8                                  PUBLIC  ___xordrawb
+     9                          
+    10                                  EXTERN  asm_xordrawb
+    11                          
+    12                          xordrawb:
+    13                          _xordrawb:
+    14                          ___xordrawb:
+    15                                  push    ix
+    16                                  ld      ix, 2
+    17                                  add     ix, sp
+    18                                  ld      c, (ix+2)
+    19                                  ld      b, (ix+4)
+    20                                  ld      l, (ix+6)
+    21                                  ld      h, (ix+8)
+    22                                  pop     ix
+    23                                  jp      asm_xordrawb
+    24                            ENDIF
+    25                          

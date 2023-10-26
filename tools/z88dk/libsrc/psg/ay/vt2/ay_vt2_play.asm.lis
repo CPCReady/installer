@@ -1,0 +1,53 @@
+/tmp/tmpXXdFzmip.asm:
+     1                          MODULE ay_vt2_play_asm
+     2                          LINE 0, "ay_vt2_play.asm"
+ay_vt2_play.asm:
+                                
+     1                          
+     2                          	SECTION	code_psg
+     3                          
+     4                          IF !__CPU_INTEL__ && !__CPU_GBZ80__
+     5                          
+     6                              PUBLIC  ay_vt2_play
+     7                              PUBLIC  _ay_vt2_play
+     8                              PUBLIC  ay_vt2_start
+     9                              PUBLIC  _ay_vt2_start
+    10                              PUBLIC  ay_vt2_stop
+    11                              PUBLIC  _ay_vt2_stop
+    12                          
+    13                              EXTERN  asm_VT_PLAY
+    14                              EXTERN  asm_VT_MUTE
+    15                          
+    16                          ay_vt2_play:
+    17                          _ay_vt2_play:
+    18                              push    ix
+    19                              ld      a,(__ay_vt2_play_enabled)
+    20                              and     a
+    21                              call    nz,asm_VT_PLAY
+    22                              pop     ix
+    23                              ret
+    24                          
+    25                          ay_vt2_start:
+    26                          _ay_vt2_start:
+    27                              ld      a,1
+    28                              ld      (__ay_vt2_play_enabled),a
+    29                              ret
+    30                          
+    31                          ay_vt2_stop:
+    32                          _ay_vt2_stop:
+    33                              push    ix
+    34                              xor     a
+    35                              ld      (__ay_vt2_play_enabled),a
+    36                              call	asm_VT_MUTE
+    37                              pop     ix
+    38                              ret
+    39                          
+    40                          
+    41                          
+    42                              SECTION	data_psg
+    43                          
+    44                          __ay_vt2_play_enabled:	defb	1
+    45                          
+    46                          ENDIF
+    47                          
+    48                          

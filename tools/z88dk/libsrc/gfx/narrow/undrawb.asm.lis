@@ -1,0 +1,35 @@
+/tmp/tmpXXiBLQS5.asm:
+     1                          MODULE undrawb_asm
+     2                          LINE 0, "undrawb.asm"
+undrawb.asm:
+                                
+     1                          ; ----- void __CALLEE__ undrawb(int x, int y, int h, int v)
+     2                          ;
+     3                          ;    $Id: undrawb.asm $
+     4                          ;
+     5                          
+     6                          
+     7                            IF    !__CPU_INTEL__&!__CPU_GBZ80__
+     8                                  SECTION code_graphics
+     9                          
+    10                                  PUBLIC  undrawb
+    11                                  PUBLIC  _undrawb
+    12                                  PUBLIC  ___undrawb
+    13                          
+    14                                  EXTERN  asm_undrawb
+    15                          
+    16                          
+    17                          undrawb:
+    18                          _undrawb:
+    19                          ___undrawb:
+    20                                  push    ix
+    21                                  ld      ix, 2
+    22                                  add     ix, sp
+    23                                  ld      c, (ix+2)
+    24                                  ld      b, (ix+4)
+    25                                  ld      l, (ix+6)
+    26                                  ld      h, (ix+8)
+    27                                  pop     ix
+    28                                  jp      asm_undrawb
+    29                            ENDIF
+    30                          

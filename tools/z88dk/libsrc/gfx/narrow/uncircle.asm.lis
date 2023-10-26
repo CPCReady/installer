@@ -1,0 +1,32 @@
+/tmp/tmpXXpnmTw8.asm:
+     1                          MODULE uncircle_asm
+     2                          LINE 0, "uncircle.asm"
+uncircle.asm:
+                                
+     1                          ;
+     2                          ;     Z88 Graphics Functions - Small C+ stubs
+     3                          ; Usage: uncircle(int x, int y, int radius, int skip);
+     4                          
+     5                          
+     6                            IF    !__CPU_INTEL__&!__CPU_GBZ80__
+     7                                  SECTION code_graphics
+     8                          
+     9                                  PUBLIC  uncircle
+    10                                  PUBLIC  _uncircle
+    11                                  PUBLIC  ___uncircle
+    12                                  EXTERN  asm_uncircle
+    13                          
+    14                          
+    15                          uncircle:
+    16                          _uncircle:
+    17                          ___uncircle:
+    18                                  push    ix
+    19                                  ld      ix, 2
+    20                                  add     ix, sp
+    21                                  ld      e, (ix+2)               ;skip
+    22                                  ld      d, (ix+4)               ;radius
+    23                                  ld      c, (ix+6)               ;y
+    24                                  ld      b, (ix+8)               ;x
+    25                                  jp      asm_uncircle
+    26                            ENDIF
+    27                          

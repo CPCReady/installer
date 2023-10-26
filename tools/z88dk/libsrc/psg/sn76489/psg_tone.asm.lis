@@ -1,0 +1,91 @@
+/tmp/tmpXXn4UVfh.asm:
+     1                          MODULE psg_tone_asm
+     2                          LINE 0, "psg_tone.asm"
+psg_tone.asm:
+                                
+     1                          	SECTION code_clib
+     2                          
+     3                          IF !__CPU_INTEL__ & !__CPU_RABBIT__ & !__CPU_GBZ80__
+     4                          	PUBLIC	set_sound_freq
+     5                          	PUBLIC	_set_sound_freq
+     6                          	PUBLIC	___set_sound_freq
+     7                          	PUBLIC	psg_tone
+     8                          	PUBLIC	_psg_tone
+     9                          	PUBLIC	___psg_tone
+    10                          
+    11                          ;	$Id: psg_tone.asm $
+    12                          
+    13                          ;==============================================================
+    14                          ; void set_sound_freq(int channel, int freq)
+    15                          ;==============================================================
+    16                          ; Sets the sound frequency for a given channel
+    17                          ;==============================================================
+    18                          
+    19                          	INCLUDE	"sn76489.inc"
+    20                          
+    21                          .set_sound_freq
+    22                          ._set_sound_freq
+    23                          .___set_sound_freq
+    24                          .psg_tone
+    25                          ._psg_tone
+    26                          .___psg_tone
+    27                          
+    28                          	ld	hl, 2
+    29                          	add	hl, sp
+    30                          	ld	e, (hl)		; DE = Frequency
+    31                          	inc	hl
+    32                          	ld	d, (hl)
+    33                          	inc 	hl
+    34                          	ld	c, (hl)		; C = Channel
+    35                          
+    36                          	ld	a, e
+    37                          	and	a, $0F
+    38                          	ld	b, a		; 4 LSB of the freq
+    39                          
+    40                          	ld	a, c
+    41                          	rrc	a
+    42                          	rrc	a
+    43                          	rrc	a
+    44                          	and	a, $60		; Puts the channel number in bits 5 and 6
+    45                          
+    46                          	or	a, $80
+    47                          	or	a, b		; Prepares the first byte of the command
+    48                          IF HAVE16bitbus
+    49                              ld      bc,psgport
+    50                              out     (c),a
+    51                          ELSE
+    52                              out	(psgport), a	; Sends it
+    53                            IF PSGLatchPort
+    54                              in a,(PSGLatchPort)
+    55                            ENDIF
+    56                          ENDIF
+    57                          
+    58                          	ld	a, e
+    59                          	srl	a
+    60                          	srl	a
+    61                          	srl	a
+    62                          	srl	a
+    63                          	and	a, $0F
+    64                          	ld	b, a		; Bits 4..7 of the frequency go to bytes 0..3 of the register
+    65                          
+    66                          	ld	a, d
+    67                          	sla	a
+    68                          	sla	a
+    69                          	sla	a
+    70                          	sla	a
+    71                          	and	a, $30		; Bits 8, 9 of the frequency go to bytes 4,5 of the register
+    72                          
+    73                          	or	a, b		; Puts them together
+    74                          IF HAVE16bitbus
+    75                              ld      bc,psgport
+    76                              out     (c),a
+    77                          ELSE
+    78                              out	(psgport), a	; Sends the second byte of the command
+    79                            IF PSGLatchPort
+    80                              in a,(PSGLatchPort)
+    81                            ENDIF
+    82                          ENDIF
+    83                          
+    84                          	ret
+    85                          ENDIF
+    86                          

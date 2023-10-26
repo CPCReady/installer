@@ -1,0 +1,29 @@
+/tmp/tmpXX8IQsgW.asm:
+     1                          MODULE cplot_asm
+     2                          LINE 0, "cplot.asm"
+cplot.asm:
+                                
+     1                          ; CALLER LINKAGE FOR FUNCTION POINTERS
+     2                          
+     3                                  SECTION code_clib
+     4                                  PUBLIC  cplot
+     5                                  PUBLIC  _cplot
+     6                                  PUBLIC  ___cplot
+     7                                  EXTERN  asm_cplot
+     8                          
+     9                          cplot:
+    10                          _cplot:
+    11                          ___cplot:
+    12                          
+    13  0000  f1                        pop     af
+    14  0001  c1                        pop     bc
+    15  0002  d1                        pop     de
+    16  0003  e1                        pop     hl
+    17  0004  e5                        push    hl
+    18  0005  d5                        push    de
+    19  0006  c5                        push    bc
+    20  0007  f5                        push    af
+    21                          
+    22                          
+    23  0008  c30000                    jp      asm_cplot
+    24                          

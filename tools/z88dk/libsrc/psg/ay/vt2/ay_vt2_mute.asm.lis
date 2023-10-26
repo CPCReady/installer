@@ -1,0 +1,25 @@
+/tmp/tmpXXe2iCjk.asm:
+     1                          MODULE ay_vt2_mute_asm
+     2                          LINE 0, "ay_vt2_mute.asm"
+ay_vt2_mute.asm:
+                                
+     1                          
+     2                          IF !__CPU_INTEL__ && !__CPU_GBZ80__
+     3                          
+     4                              SECTION code_psg
+     5                          
+     6                              PUBLIC  ay_vt2_mute
+     7                              PUBLIC  _ay_vt2_mute
+     8                              EXTERN  asm_VT_MUTE
+     9                          
+    10                          
+    11                          ay_vt2_mute:
+    12                          _ay_vt2_mute:
+    13                              push    ix
+    14                              call    asm_VT_MUTE
+    15                              pop     ix
+    16                              ret
+    17                          
+    18                          ENDIF
+    19                          
+    20                          
