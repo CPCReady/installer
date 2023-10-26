@@ -1,8 +1,0 @@
-
-SECTION code_fp_mbf32
-
-PUBLIC  DZERR
-
-EXTERN  ARET
-
-defc DZERR = ARET
