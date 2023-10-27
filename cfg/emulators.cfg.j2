@@ -3,18 +3,22 @@
 type   = web
 model  = 6128
 run    = run"MAIN.BAS"
+image  = out/{{ name }}.DSK
+path   = cfg/rvm-web.html
 
 [CPC6128]
 type   = desktop
 model  = 6128
 run    = run"MAIN.BAS"
 path   =
+image  = out/{{ name }}.DSK
 
 [CPC464]
 type   = desktop
 model  = 464
 run    = run""
 path   =
+image  = out/{{ name }}.CDT
 
 [m4board]
 ## There must be a folder called /tmp on the M4 Board
