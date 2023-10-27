@@ -1,6 +1,6 @@
 PROJECT_CFG = cfg/project.cfg
 EMULATORS_CFG = cfg/emulators.cfg
-EMULATOR = rvm-web
+EMULATOR = WEB6128
 
 all: build run
 
@@ -16,7 +16,7 @@ read-project-config:
 
 .PHONY: build
 build: read-project-config
-	@cpcr_build --build
+	@cpcr build
 
 .PHONY: check-emulators-config
 check-emulators-config:
@@ -27,4 +27,4 @@ check-emulators-config:
 
 .PHONY: run
 run: check-emulators-config
-	@cpcr_run --emulator $(EMULATOR)
+	@cpcr run --setting $(EMULATOR)
