@@ -48,9 +48,18 @@ echo "${YELLOW}-----------------------------------------------------------------
 
 echo
 
+saludar_con_nombre() {
+    nombre=$1
+    echo "¡Hola, $nombre! ¿Cómo estás?"
+}
+
+
 ##################################
 # CHEQUEO DE REQUISITOS
 ##################################
+
+
+
 echo "${BLUE}INFO     ${NC}Checking requirements...🍺"
 if command -v pip &> /dev/null; then
     echo "${BLUE}INFO     ${NC}pip installed [${GREEN}OK${NC}]"
