@@ -23,21 +23,23 @@ YELLOW=$(tput setaf 3)
 BLUE=$(tput setaf 4)
 GRAY=$(tput setaf 8)
 NC=$(tput sgr0)  # No Color
+cpcready_path="tools/sdk"
 
 VERSION=$(cat VERSION)
 VERSION_RETROVIRTUALMACHINE="2.0.beta-1.r7"
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 PATH_INSTALL="$SCRIPT_DIR"
-PATH_CPCREADY="tools/sdk"
-
+PATH_CPCREADY="$SCRIPT_DIR/tools/sdk"
+PATH_CPCREADY_DIST="$SCRIPT_DIR/tools/sdk/dist"
+WHL_FILE="$PATH_CPCREADY_DIST/CPCReady-${VERSION}-py3-none-any.whl"
 
 # Valor predeterminado
-INSTALATION="FULL"
+INSTALL="full"
 
 if [ "$#" -gt 0 ]; then
     # Si se pasaron argumentos, verificar si el primer argumento está en la lista permitida
     caso_valido=false
-    for caso in "UPGRADE" "upgrade" "FULL" "full"; do
+    for caso in "upgrade" "full"; do
         if [ "$1" == "$caso" ]; then
             caso_valido=true
             break
@@ -45,7 +47,7 @@ if [ "$#" -gt 0 ]; then
     done
 
     if [ "$caso_valido" == true ]; then
-        INSTALATION="$1"
+        INSTALL="$1"
     else
         echo
         echo "${RED}ERROR    The argument passed to the script is not valid. Options [upgrade, full]"
@@ -77,7 +79,8 @@ check_install() {
     if ! grep -qxF "export CPCREADY=$PATH_INSTALL" "$HOME/$1"; then
         echo "${GREEN}CHECK    ${NC}Previous installation in $1 [${GREEN}NONE${NC}]"
     else
-        echo "${RED}ERROR    CPCReady is installed on this computer. To continue deleting data from $1"
+        echo "${RED}ERROR    CPCReady is installed on this computer. "
+        echo "         To continue deleting data from $1 or exetute ./setup.sh upgrade to update software"
         exit 1
     fi
 }
@@ -161,7 +164,7 @@ compare_versions() {
 # CHECK NEW VERSION
 ##################################
 
-if [ "$INSTALATION" == "upgrade" ]; then
+if [ "$INSTALL" == "upgrade" ]; then
     echo "${BLUE}INFO     ${NC}Checking new version...🍺"
 
     # Obtenemos version del repositorio.
@@ -208,7 +211,7 @@ zip_file="RetroVirtualMachine.zip"
 download_dir="./downloads"
 extracted_dir="./extracted"
 target_dir="tools/bin"
-cpcready_path="tools/sdk"
+
 
 mkdir -p "$download_dir" "$extracted_dir" "$target_dir"
 echo "${GREEN}DOWNLOAD ${NC} - RetroVitualMachine ($VERSION_RETROVIRTUALMACHINE)"
@@ -251,10 +254,22 @@ echo "__version__ = '$VERSION'" > $PATH_CPCREADY/CPCReady/__init__.py
 cd $PATH_CPCREADY
 python3 -m build
 
+##################################
+# INSTALL CPCREADY
+##################################
+
+pip install "$WHL_FILE" --force-reinstall 
+
+if [ $? -eq 0 ]; then
+    echo "${BLUE}INFO     ${NC}CPCReady install successfully [${GREEN}OK${NC}]"
+else
+    exit 1
+fi
+
 # #############################
 # ADD ENVIRONMENT VARIABLES
 # #############################
-if [ "$INSTALATION" == "full" ]; then
+if [ "$INSTALL" == "full" ]; then
     echo "${BLUE}INFO     ${NC}Installation path: $PATH_INSTALL"
     if [ -f "$HOME/.bashrc" ]; then
         if ! grep -qxF "export CPCREADY=$PATH_INSTALL" "$HOME/.bashrc"; then
