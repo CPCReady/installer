@@ -127,12 +127,6 @@ del_temporal_files() {
     fi
 }
 
-##################################
-# CHEQUEO DE INSTALACION
-##################################
-
-check_install ".bashrc"
-check_install ".zshrc"
 
 ##################################
 # CHEQUEO DE REQUISITOS
@@ -142,6 +136,16 @@ echo "${BLUE}INFO     ${NC}Checking requirements...🍺"
 check_requirements "pip"
 check_requirements "python3"
 check_requirements "dos2unix"
+check_requirements "git"
+
+git pull
+
+##################################
+# CHEQUEO DE INSTALACION
+##################################
+
+check_install ".bashrc"
+check_install ".zshrc"
 
 
 ##################################
