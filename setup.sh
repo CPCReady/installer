@@ -128,6 +128,37 @@ del_temporal_files() {
 }
 
 
+get_repo_version() {
+    url_version="https://raw.githubusercontent.com/CPCReady/installer/main/VERSION"
+    publishversion=$(curl -s "$url_version")
+    echo $publishversion
+    if [ -z "$publishversion" ]; then
+        echo "${RED}ERROR    ${NC}Could not obtain the latest published version"
+        exit 1
+    fi
+}
+
+compare_versions() {
+    
+    get_repo_version
+
+    local v1=$1
+    local v2=$2
+
+    IFS='.' read -ra arr1 <<< "$v1"
+    IFS='.' read -ra arr2 <<< "$v2"
+
+    for i in "${!arr1[@]}"; do
+        if [ "${arr1[i]}" -lt "${arr2[i]}" ]; then
+            return 0
+        elif [ "${arr1[i]}" -gt "${arr2[i]}" ]; then
+            return 1
+        fi
+    done
+
+}
+
+
 ##################################
 # CHEQUEO DE REQUISITOS
 ##################################
@@ -138,7 +169,19 @@ check_requirements "python3"
 check_requirements "dos2unix"
 check_requirements "git"
 
-git pull
+echo "${BLUE}INFO     ${NC}Checking new version...🍺"
+
+# Obtenemos version del repositorio.
+get_repo_version
+
+# comparamos con version instalada.
+if ! compare_versions "$publishversion" "$VERSION"; then
+    echo "Existe nueva version $publishversion"
+    git pull
+fi
+
+# upgrade=$(git pull)
+# echo $upgrade
 
 ##################################
 # CHEQUEO DE INSTALACION
