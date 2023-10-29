@@ -1,0 +1,137 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "BUILD2",
+            "type": "python",
+            "request": "launch",
+            "module": "CPCReady.main",
+            "cwd": "${workspaceFolder}/${env:PROJECT_TEST}",
+            "justMyCode": true,
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}",
+            },
+            "args": ["build","--scope", "all"] 
+        },
+        {
+            "name": "PROJECT2",
+            "type": "python",
+            "request": "launch",
+            "module": "CPCReady.main",
+            "cwd": "${workspaceFolder}",
+            "justMyCode": true,
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}",
+            },
+            "args": ["project","--name", "${env:PROJECT_TEST}"] 
+        },
+        {
+            "name": "EMULACION2",
+            "type": "python",
+            "request": "launch",
+            "module": "CPCReady.main",
+            "cwd": "${workspaceFolder}/${env:PROJECT_TEST}",
+            "justMyCode": true,
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}",
+            },
+            "args": ["run","--setting", "WEB6128"] 
+        },
+        {
+            "name": "EMULACION",
+            "type": "python",
+            "request": "launch",
+            "module": "CPCReady.run",
+            "cwd": "${workspaceFolder}/${env:PROJECT_TEST}",
+            "justMyCode": true,
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}",
+            },
+            "args": ["--emulator", "m4board"] 
+        },
+        {
+            "name": "VERSION",
+            "type": "python",
+            "request": "launch",
+            "module": "CPCReady.screen",
+            "cwd": "${workspaceFolder}",
+            "justMyCode": true,
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}",
+            },
+            "args": ["--version"] 
+        },
+        {
+            "name": "BUILD PROJECT",
+            "type": "python",
+            "request": "launch",
+            "module": "CPCReady.build",
+            "cwd": "${workspaceFolder}/${env:PROJECT_TEST}",
+            "justMyCode": true,
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}",
+            },
+            "args": ["--build"] 
+        },
+        {
+            "name": "CREATE NEW PROJECT",
+            "type": "python",
+            "request": "launch",
+            "module": "CPCReady.project",
+            "cwd": "${workspaceFolder}",
+            "justMyCode": true,
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}",
+            },
+            "args": ["--project", "${env:PROJECT_TEST}"] 
+        },
+        {
+            "name": "PALETTE",
+            "type": "python",
+            "request": "launch",
+            "module": "CPCReady.palette",
+            "cwd": "${workspaceFolder}",
+            "justMyCode": true,
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}",
+            },
+            "args": ["--image", "/Users/david/Downloads/logole222222.png","--mode", "0"] 
+        },
+        {
+            "name": "CREATE SCREEN",
+            "type": "python",
+            "request": "launch",
+            "module": "CPCReady.screen",
+            "cwd": "${workspaceFolder}",
+            "justMyCode": true,
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}",
+            },
+            "args": ["--image", "/Users/david/Downloads/logole222222.png","--mode", "0","--out","testing2basic"] 
+        },
+        {
+            "name": "CREATE SCREEN DSK",
+            "type": "python",
+            "request": "launch",
+            "module": "CPCReady.screen",
+            "cwd": "${workspaceFolder}",
+            "justMyCode": true,
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}",
+            },
+            "args": ["--image", "/Users/david/Downloads/logole222222.png","--mode", "0","--out","testing2basic","--dsk"] 
+        },
+        {
+            "name": "CREATE SPRITE",
+            "type": "python",
+            "request": "launch",
+            "module": "CPCReady.sprite",
+            "cwd": "${workspaceFolder}",
+            "justMyCode": true,
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}",
+            },
+            "args": ["--image", "/home/destroyer/Github/CPCReady/sdk/testing333/img/avatar.png","--mode", "0","--out","testing333","--height","12", "--width","12"] 
+        }
+    ]
+}

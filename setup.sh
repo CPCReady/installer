@@ -1,6 +1,6 @@
 #!/bin/bash
 ##-----------------------------LICENSE NOTICE------------------------------------
-##  CPCReady: Software Developer Kit for programming in Amstrad Basic and Ugbasic 
+##  CPCReady: Software Developer Kit for programming in Amstrad Basic and Ugbasic
 ##  Copyright (C) 2023 destroyer
 ##
 ##  This program is free software: you can redistribute it and/or modify
@@ -21,21 +21,46 @@ RED=$(tput setaf 1)
 GREEN=$(tput setaf 2)
 YELLOW=$(tput setaf 3)
 BLUE=$(tput setaf 4)
-GRAY=$(tput setaf 8) 
+GRAY=$(tput setaf 8)
 NC=$(tput sgr0)  # No Color
 
 VERSION=$(cat VERSION)
 VERSION_RETROVIRTUALMACHINE="2.0.beta-1.r7"
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 PATH_INSTALL="$SCRIPT_DIR"
+PATH_CPCREADY="tools/sdk"
+
+
+# Valor predeterminado
+INSTALATION="FULL"
+
+if [ "$#" -gt 0 ]; then
+    # Si se pasaron argumentos, verificar si el primer argumento está en la lista permitida
+    caso_valido=false
+    for caso in "UPGRADE" "upgrade" "FULL" "full"; do
+        if [ "$1" == "$caso" ]; then
+            caso_valido=true
+            break
+        fi
+    done
+
+    if [ "$caso_valido" == true ]; then
+        INSTALATION="$1"
+    else
+        echo
+        echo "${RED}ERROR    The argument passed to the script is not valid. Options [upgrade, full]"
+        exit 1
+    fi
+fi
+
 
 echo
 echo "${YELLOW} ██████╗██████╗  ██████╗██████╗ ███████╗ █████╗ ██████╗ ██╗   ██╗${NC}"
 echo "${YELLOW}██╔════╝██╔══██╗██╔════╝██╔══██╗██╔════╝██╔══██╗██╔══██╗╚██╗ ██╔╝${NC}"
-echo "${YELLOW}██║     ██████╔╝██║     ██████╔╝█████╗  ███████║██║  ██║ ╚████╔╝ ${NC}" 
-echo "${YELLOW}██║     ██╔═══╝ ██║     ██╔══██╗██╔══╝  ██╔══██║██║  ██║  ╚██╔╝  ${NC}" 
-echo "${YELLOW}╚██████╗██║     ╚██████╗██║  ██║███████╗██║  ██║██████╔╝   ██║   ${NC}" 
-echo "${YELLOW} ╚═════╝╚═╝      ╚═════╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝╚═════╝    ╚═╝   ${NC}" 
+echo "${YELLOW}██║     ██████╔╝██║     ██████╔╝█████╗  ███████║██║  ██║ ╚████╔╝ ${NC}"
+echo "${YELLOW}██║     ██╔═══╝ ██║     ██╔══██╗██╔══╝  ██╔══██║██║  ██║  ╚██╔╝  ${NC}"
+echo "${YELLOW}╚██████╗██║     ╚██████╗██║  ██║███████╗██║  ██║██████╔╝   ██║   ${NC}"
+echo "${YELLOW} ╚═════╝╚═╝      ╚═════╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝╚═════╝    ╚═╝   ${NC}"
 echo "${YELLOW}                                                    Version $VERSION"
 echo "${YELLOW}--------------------------------------------------------------------"
 echo "${GREEN} Software Developer Kit for programming in Amstrad Basic and Ugbasic"
@@ -48,34 +73,77 @@ echo "${YELLOW}-----------------------------------------------------------------
 
 echo
 
-saludar_con_nombre() {
-    nombre=$1
-    echo "¡Hola, $nombre! ¿Cómo estás?"
+check_install() {
+    if ! grep -qxF "export CPCREADY=$PATH_INSTALL" "$HOME/$1"; then
+        echo "${GREEN}CHECK    ${NC}Previous installation in $1 [${GREEN}NONE${NC}]"
+    else
+        echo "${RED}ERROR    CPCReady is installed on this computer. To continue deleting data from $1"
+        exit 1
+    fi
 }
 
+check_requirements() {
+    if command -v $1 &> /dev/null; then
+        echo "${BLUE}INFO     ${NC} - $1 installed [${GREEN}OK${NC}]"
+    else
+        echo "${RED}ERROR    $1 not installed on the system!!!"
+        echo "         ${YELLOW}To continue please install $1"
+        exit 1
+    fi
+}
+
+generateChanges() {
+    carpeta="docs/versions"
+    archivo_concatenado="docs/CHANGES.md"
+    if [ -e $archivo_concatenado ]; then
+        rm $archivo_concatenado
+    fi
+    unamestr=$(uname)
+    case "$unamestr" in
+        "Linux")
+            archivos=$(find "$carpeta" -type f -exec ls -t -p "{}" + | awk '{print $NF}')
+            ;;
+        "Darwin")
+            archivos=$(find "$carpeta" -type f -exec ls -t -p "{}" + | awk '{print $NF}')
+            ;;
+        *)
+            echo "Sistema operativo no compatible"
+            exit 1
+            ;;
+    esac
+
+    echo "## Historial de Cambios" > "$archivo_concatenado"
+    for archivo in $archivos; do
+        cat "$archivo" >> "$archivo_concatenado"
+    done
+}
+
+del_temporal_files() {
+    find . -type f -name ".DS_Store" -exec rm -f {} \;
+    directorio_a_eliminar="$1"
+    if [ -d "$directorio_a_eliminar" ]; then
+        rm -r "$directorio_a_eliminar"
+        echo "${GREEN}DELETE   ${NC} - $directorio_a_eliminar [${GREEN}OK${NC}]"
+    fi
+}
+
+##################################
+# CHEQUEO DE INSTALACION
+##################################
+
+check_install ".bashrc"
+check_install ".zshrc"
 
 ##################################
 # CHEQUEO DE REQUISITOS
 ##################################
 
-
-
 echo "${BLUE}INFO     ${NC}Checking requirements...🍺"
-if command -v pip &> /dev/null; then
-    echo "${BLUE}INFO     ${NC}pip installed [${GREEN}OK${NC}]"
-else
-    echo "${RED}ERROR    pip not installed on the system!!!"
-    echo "         ${YELLOW}To continue please execute: ${GRAY}sudo apt-get install python3-pip"
-    exit 1
-fi
+check_requirements "pip"
+check_requirements "python3"
+check_requirements "dos2unix"
 
-if command -v dos2unix &> /dev/null; then
-    echo "${BLUE}INFO     ${NC}dos2unix installed [${GREEN}OK${NC}]"
-else
-    echo "${RED}ERROR    dos2unix not installed on the system!!!"
-    echo "         ${YELLOW}To continue please execute: ${GRAY}sudo apt-get install dos2unix"
-    exit 1
-fi
+
 ##################################
 # DOWNLOAD RETRO VIRTUAL MACHINE
 ##################################
@@ -86,18 +154,19 @@ zip_file="RetroVirtualMachine.zip"
 download_dir="./downloads"
 extracted_dir="./extracted"
 target_dir="tools/bin"
+cpcready_path="tools/sdk"
 
 mkdir -p "$download_dir" "$extracted_dir" "$target_dir"
-echo "${GREEN}DOWNLOAD ${NC}RetroVitualMachine ($VERSION_RETROVIRTUALMACHINE)"
+echo "${GREEN}DOWNLOAD ${NC} - RetroVitualMachine ($VERSION_RETROVIRTUALMACHINE)"
 if wget -O "$download_dir/$zip_file" "$download_link" > /dev/null 2>&1; then
-    echo "${BLUE}INFO     ${NC}RetroVitualMachine [${GREEN}OK${NC}]"
+    echo "${BLUE}INFO     ${NC} - RetroVitualMachine [${GREEN}OK${NC}]"
 else
     echo "${RED}ERROR    ${NC}Download RetroVirtual Machine [${RED}ERROR${NC}]"
     exit 1
 fi
 
 if unzip -q "$download_dir/$zip_file" -d "$extracted_dir"; then
-    echo "${GREEN}UNZIP    ${NC}RetroVitualMachine > tools/bin [${GREEN}OK${NC}]"
+    echo "${GREEN}UNZIP    ${NC} - RetroVitualMachine > tools/bin [${GREEN}OK${NC}]"
 else
     echo "${RED}ERROR    ${NC}Unzip RetroVirtual Machine [${RED}ERROR${NC}]"
     exit 1
@@ -109,50 +178,69 @@ rm -rf "$download_dir" "$extracted_dir"
 ##################################
 # INSTALL CPCREADY
 ##################################
-comando="pip install cpcready==${VERSION}"
-echo "${GREEN}INSTALL  ${NC}CPCReady ($VERSION)...🍺"
-$comando > /dev/null 2>&1
-if [ $? -eq 0 ]; then
-    echo "${BLUE}INFO     ${NC}Install CPCReady ($VERSION) [${GREEN}OK${NC}]"
-else
-    echo "${RED}ERROR    CPCReady not installed!!!"
-    exit 1
-fi
+# comando="pip install cpcready==${VERSION}"
+# echo "${GREEN}INSTALL  ${NC} - CPCReady ($VERSION)...🍺"
+# $comando > /dev/null 2>&1
+# if [ $? -eq 0 ]; then
+#     echo "${BLUE}INFO     ${NC} - Install CPCReady ($VERSION) [${GREEN}OK${NC}]"
+# else
+#     echo "${RED}ERROR    CPCReady not installed!!!"
+#     exit 1
+# fi
+echo "${GREEN}INSTALL  ${NC}Dependencies Build & twine...🍺"
 
-##############################
+del_temporal_files "$PATH_CPCREADY/dist"
+del_temporal_files "$PATH_CPCREADY/CPCReady.egg-info"
+del_temporal_files "$PATH_CPCREADY/CPCReady/__pycache__"
+
+pip install build
+pip install --upgrade twine
+echo "${GREEN}COMPILE  ${NC}CPCReady ($VERSION)"
+echo "__version__ = '$VERSION'" > $PATH_CPCREADY/CPCReady/__init__.py
+
+
+##################################
+# COMPILE CPCREADY
+##################################
+
+cd $PATH_CPCREADY
+python3 -m build
+
+# #############################
 # ADD ENVIRONMENT VARIABLES
-##############################
-# echo "${BLUE}INFO     ${NC}Installation path: $PATH_INSTALL"
-# if [ -f "$HOME/.bashrc" ]; then
-#     if ! grep -qxF "export CPCREADY=$PATH_INSTALL" "$HOME/.bashrc"; then
-#         echo "export CPCREADY=$PATH_INSTALL" >> "$HOME/.bashrc"
-#         echo "export CPCREADY_CFG=$PATH_INSTALL/CPCReady/cfg" >> "$HOME/.bashrc"
-#         echo "export PATH=\$PATH:$PATH_INSTALL/CPCReady/tools/bin" >> "$HOME/.bashrc"
-#         echo "export PATH=\$PATH:$PATH_INSTALL/CPCReady/tools/z88dk/bin" >> "$HOME/.bashrc"
-#         echo "export ZCCCFG=$PATH_INSTALL/CPCReady/tools/z88dk/lib/config" >> "$HOME/.bashrc"
-#         echo "${GREEN}ADD      ${NC}Environment variables to .bashrc [${GREEN}OK${NC}]"
-#     else
-#         echo "${YELLOW}WARNING  ${NC}Environment variables already exist in .bashrc"
-#     fi
-# else
-#     echo "${YELLOW}WARNING  ${NC}Not exist .zshrc"
-# fi
+# #############################
+if [ "$INSTALATION" == "full" ]; then
+    echo "${BLUE}INFO     ${NC}Installation path: $PATH_INSTALL"
+    if [ -f "$HOME/.bashrc" ]; then
+        if ! grep -qxF "export CPCREADY=$PATH_INSTALL" "$HOME/.bashrc"; then
+            echo "export CPCREADY=$PATH_INSTALL" >> "$HOME/.bashrc"
+            echo "export CPCREADY_CFG=$PATH_INSTALL/CPCReady/cfg" >> "$HOME/.bashrc"
+            echo "export PATH=\$PATH:$PATH_INSTALL/CPCReady/tools/bin" >> "$HOME/.bashrc"
+            echo "export PATH=\$PATH:$PATH_INSTALL/CPCReady/tools/z88dk/bin" >> "$HOME/.bashrc"
+            echo "export ZCCCFG=$PATH_INSTALL/CPCReady/tools/z88dk/lib/config" >> "$HOME/.bashrc"
+            echo "${GREEN}ADD      ${NC}Environment variables to .bashrc [${GREEN}OK${NC}]"
+        else
+            echo "${YELLOW}WARNING  ${NC}Environment variables already exist in .bashrc"
+        fi
+    else
+        echo "${YELLOW}WARNING  ${NC}Not exist .zshrc"
+    fi
 
-# if [ -f "$HOME/.zshrc" ]; then
-#     if ! grep -qxF "export CPCREADY=$PATH_INSTALL" "$HOME/.zshrc"; then
-#         echo "export CPCREADY=$PATH_INSTALL" >> "$HOME/.zshrc"
-#         echo "export CPCREADY_CFG=$PATH_INSTALL/CPCReady/cfg" >> "$HOME/.zshrc"
-#         echo "export PATH=\$PATH:$PATH_INSTALL/CPCReady/tools/bin" >> "$HOME/.zshrc"
-#         echo "export PATH=\$PATH:$PATH_INSTALL/CPCReady/tools/z88dk/bin" >> "$HOME/.zshrc"
-#         echo "export ZCCCFG=$PATH_INSTALL/CPCReady/tools/z88dk/lib/config" >> "$HOME/.zshrc"
-#         echo "${GREEN}ADD      ${NC}Environment variables to .zshrc [${GREEN}OK${NC}]"
-#     else
-#         echo "${YELLOW}WARNING  ${NC}Environment variables already exist in .zshrc"
-#     fi
-# else
-#     echo "${YELLOW}WARNING  ${NC}Not exist .zshrc"
-# fi
-
+    if [ -f "$HOME/.zshrc" ]; then
+        if ! grep -qxF "export CPCREADY=$PATH_INSTALL" "$HOME/.zshrc"; then
+            echo "export CPCREADY=$PATH_INSTALL" >> "$HOME/.zshrc"
+            echo "export CPCREADY_CFG=$PATH_INSTALL/CPCReady/cfg" >> "$HOME/.zshrc"
+            echo "export PATH=\$PATH:$PATH_INSTALL/CPCReady/tools/bin" >> "$HOME/.zshrc"
+            echo "export PATH=\$PATH:$PATH_INSTALL/CPCReady/tools/z88dk/bin" >> "$HOME/.zshrc"
+            echo "export ZCCCFG=$PATH_INSTALL/CPCReady/tools/z88dk/lib/config" >> "$HOME/.zshrc"
+            echo "${GREEN}ADD      ${NC}Environment variables to .zshrc [${GREEN}OK${NC}]"
+        else
+            echo "${YELLOW}WARNING  ${NC}Environment variables already exist in .zshrc"
+        fi
+    else
+        echo "${YELLOW}WARNING  ${NC}Not exist .zshrc"
+    fi
+fi
 echo
 
 echo "${YELLOW}--------------------------------------------------------------------"

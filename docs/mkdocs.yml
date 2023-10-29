@@ -1,0 +1,11 @@
+site_name: CPCReady
+nav:
+  - Introduccion: 'index.md'
+    - Licencia: 'license.md'
+    - Historial de Cambios: 'CHANGES.md'
+  - 'Guia de usuario':
+    - Instalacion: 'install.md'
+    - Como Empezar: 'users-guide.md'
+  - Acerca de: 'about.md'
+  
+theme: readthedocs
