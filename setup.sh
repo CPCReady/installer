@@ -131,7 +131,6 @@ del_temporal_files() {
 get_repo_version() {
     url_version="https://raw.githubusercontent.com/CPCReady/installer/main/VERSION"
     publishversion=$(curl -s "$url_version")
-    echo $publishversion
     if [ -z "$publishversion" ]; then
         echo "${RED}ERROR    ${NC}Could not obtain the latest published version"
         exit 1
@@ -158,6 +157,28 @@ compare_versions() {
 
 }
 
+##################################
+# CHECK NEW VERSION
+##################################
+
+if [ "$INSTALATION" == "upgrade" ]; then
+    echo "${BLUE}INFO     ${NC}Checking new version...🍺"
+
+    # Obtenemos version del repositorio.
+    get_repo_version
+
+    # comparamos con version instalada.
+    if ! compare_versions "$publishversion" "$VERSION"; then
+        echo "${BLUE}INFO     ${NC} - New version $publishversion found"
+        echo "${BLUE}UPDATE   ${NC} - Get started update software."
+        check_requirements "git"
+        upgrade=$(git pull)
+        echo "${BLUE}UPDATE   ${NC} - $upgrade"
+    else
+        echo "${BLUE}INFO     ${NC}The application is updated"
+        exit
+    fi
+fi
 
 ##################################
 # CHEQUEO DE REQUISITOS
@@ -168,20 +189,6 @@ check_requirements "pip"
 check_requirements "python3"
 check_requirements "dos2unix"
 check_requirements "git"
-
-echo "${BLUE}INFO     ${NC}Checking new version...🍺"
-
-# Obtenemos version del repositorio.
-get_repo_version
-
-# comparamos con version instalada.
-if ! compare_versions "$publishversion" "$VERSION"; then
-    echo "Existe nueva version $publishversion"
-    git pull
-fi
-
-# upgrade=$(git pull)
-# echo $upgrade
 
 ##################################
 # CHEQUEO DE INSTALACION
@@ -225,15 +232,7 @@ rm -rf "$download_dir" "$extracted_dir"
 ##################################
 # INSTALL CPCREADY
 ##################################
-# comando="pip install cpcready==${VERSION}"
-# echo "${GREEN}INSTALL  ${NC} - CPCReady ($VERSION)...🍺"
-# $comando > /dev/null 2>&1
-# if [ $? -eq 0 ]; then
-#     echo "${BLUE}INFO     ${NC} - Install CPCReady ($VERSION) [${GREEN}OK${NC}]"
-# else
-#     echo "${RED}ERROR    CPCReady not installed!!!"
-#     exit 1
-# fi
+
 echo "${GREEN}INSTALL  ${NC}Dependencies Build & twine...🍺"
 
 del_temporal_files "$PATH_CPCREADY/dist"
@@ -244,7 +243,6 @@ pip install build
 pip install --upgrade twine
 echo "${GREEN}COMPILE  ${NC}CPCReady ($VERSION)"
 echo "__version__ = '$VERSION'" > $PATH_CPCREADY/CPCReady/__init__.py
-
 
 ##################################
 # COMPILE CPCREADY
