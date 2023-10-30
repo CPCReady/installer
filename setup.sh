@@ -205,34 +205,36 @@ check_install ".zshrc"
 # DOWNLOAD RETRO VIRTUAL MACHINE
 ##################################
 echo "${BLUE}INFO     ${NC}Installs tools...🍺"
-download_link="https://static.retrovm.org/release/beta1/linux/x64/RetroVirtualMachine.$VERSION_RETROVIRTUALMACHINE.linux.x64.zip"
-zip_file="RetroVirtualMachine.zip"
+if [ "$ENVIRONMENT" != "DOCKER" ]; then
+    download_link="https://static.retrovm.org/release/beta1/linux/x64/RetroVirtualMachine.$VERSION_RETROVIRTUALMACHINE.linux.x64.zip"
+    zip_file="RetroVirtualMachine.zip"
 
-download_dir="./downloads"
-extracted_dir="./extracted"
-target_dir="tools/bin"
+    download_dir="./downloads"
+    extracted_dir="./extracted"
+    target_dir="tools/bin"
 
+    mkdir -p "$download_dir" "$extracted_dir" "$target_dir"
+    echo "${GREEN}DOWNLOAD ${NC} - RetroVitualMachine ($VERSION_RETROVIRTUALMACHINE)"
+    # if wget -O "$download_dir/$zip_file" "$download_link" > /dev/null 2>&1; then
+    if wget -O "$download_dir/$zip_file" "$download_link"; then
+        echo "${BLUE}INFO     ${NC} - RetroVitualMachine [${GREEN}OK${NC}]"
+    else
+        echo "${RED}ERROR    ${NC}Download RetroVirtual Machine [${RED}ERROR${NC}]"
+        exit 1
+    fi
 
-mkdir -p "$download_dir" "$extracted_dir" "$target_dir"
-echo "${GREEN}DOWNLOAD ${NC} - RetroVitualMachine ($VERSION_RETROVIRTUALMACHINE)"
-# if wget -O "$download_dir/$zip_file" "$download_link" > /dev/null 2>&1; then
-if wget -O "$download_dir/$zip_file" "$download_link"; then
-    echo "${BLUE}INFO     ${NC} - RetroVitualMachine [${GREEN}OK${NC}]"
+    if unzip -q "$download_dir/$zip_file" -d "$extracted_dir"; then
+        echo "${GREEN}UNZIP    ${NC} - RetroVitualMachine > tools/bin [${GREEN}OK${NC}]"
+    else
+        echo "${RED}ERROR    ${NC}Unzip RetroVirtual Machine [${RED}ERROR${NC}]"
+        exit 1
+    fi
+
+    mv "$extracted_dir/RetroVirtualMachine" "$target_dir/"
+    rm -rf "$download_dir" "$extracted_dir"
 else
-    echo "${RED}ERROR    ${NC}Download RetroVirtual Machine [${RED}ERROR${NC}]"
-    exit 1
+    echo "${YELLOW}WARNING  ${NC}No install Retrovirtualmachine desktop in docker."
 fi
-
-if unzip -q "$download_dir/$zip_file" -d "$extracted_dir"; then
-    echo "${GREEN}UNZIP    ${NC} - RetroVitualMachine > tools/bin [${GREEN}OK${NC}]"
-else
-    echo "${RED}ERROR    ${NC}Unzip RetroVirtual Machine [${RED}ERROR${NC}]"
-    exit 1
-fi
-
-mv "$extracted_dir/RetroVirtualMachine" "$target_dir/"
-rm -rf "$download_dir" "$extracted_dir"
-
 ##################################
 # INSTALL CPCREADY
 ##################################

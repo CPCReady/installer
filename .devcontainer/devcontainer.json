@@ -16,7 +16,8 @@
 			"cpcready.basic-language-extension",
 			"ms-vscode.makefile-tools",
 			"ritwickdey.liveserve",
-			"ms-vscode.live-server"]
+			"ms-vscode.live-server",
+			"lizebang.bash-extension-pack"]
 		}
 	},	
 	"containerEnv": {
