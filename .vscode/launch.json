@@ -34,10 +34,10 @@
             "type": "python",
             "request": "launch",
             "module": "CPCReady.main",
-            "cwd": "${workspaceFolder}/tools/sdk/${env:PROJECT_TEST}",
+            "cwd": "${workspaceFolder}/${env:PROJECT_TEST}",
             "justMyCode": true,
             "env": {
-                "PYTHONPATH": "${workspaceFolder}",
+                "PYTHONPATH": "${workspaceFolder}/tools/sdk",
             },
             "args": ["build","--scope", "all"] 
         },

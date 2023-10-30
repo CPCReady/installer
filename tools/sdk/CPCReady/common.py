@@ -203,15 +203,25 @@ def msgCustom(flavor, message, color):
 def endTask (message,flavor):
     print()
     if flavor == "OK":
-        console.print(f"🚀  Successfully {message}.")
+        MSG=f"🚀  Successfully {message}."
     if flavor == "ERROR":
-        console.print(f"💥  [red]Unsuccessful {message}.[/]")
+        MSG=f"💥  [red]Unsuccessful {message}.[/]"
 
-def showInfoTask(message):
-    print()    
-    console.print(f"👉  {message}🍺")
+    BANNER = Table(show_header=False)
+    TEXT = MSG.ljust(122, " ")
+    BANNER.add_row(TEXT)
+    console.print(BANNER)
     print()
 
+def showInfoTask(message):
+    BANNER = Table(show_header=False)
+    print()
+    MSG= f"👉  {message}🍺"
+    print(MSG)
+    # TEXT = MSG.ljust(112, " ")
+    # BANNER.add_row(TEXT)
+    # console.print(BANNER)
+    print()
 
 ##
 # Get Get file without extension
@@ -267,16 +277,20 @@ def showHeadDataProject(project):
 ##
 
 def showFoodDataProject(description, out):
-    description = f"*** {description} ***"
-    center_text = description.center(80)
-    console.print(
-        "[bold yellow]\n==================================================================================== [/bold yellow]")
+    print()
+    BANNER = Table(show_header=False)
     if out == 0:
-        console.print("[bold green]" + center_text.upper() + "[/bold green]")
-        console.print("[bold yellow]====================================================================================\n [/bold yellow]")
+        TEXT = f"🚀  " + description.ljust(110, " ")
+        print(TEXT)
+        # TEXT = "[green]" + TEXT + "[/green]"
+        # BANNER.add_row(TEXT)
+        # console.print(BANNER)
     if out == 1:
-        console.print("[bold red]" + center_text.upper() + "[/bold red]")
-        console.print("[bold yellow]====================================================================================\n [/bold yellow]")
+        TEXT = f"💥  " + description.ljust(110, " ")
+        print(TEXT)
+        # TEXT = "[bold red]" + TEXT + "[/bold red]"
+        # BANNER.add_row(TEXT)
+        # console.print(BANNER)
         sys.exit(1)
 
 
@@ -305,7 +319,7 @@ def removeContentDirectory (directory):
             ruta_completa = os.path.join(directory, archivo)
             if os.path.isfile(ruta_completa):
                 os.remove(ruta_completa)
-    msgInfo(f"Clean temporal directory.")            
+    msgCustom("DELETE", "Temporal directory.", "green")            
                 
 ##
 # compilation image

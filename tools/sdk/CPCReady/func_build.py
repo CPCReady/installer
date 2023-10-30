@@ -26,7 +26,7 @@ def create(scope):
     PROJECT_CDT          = DATA_PROJECT.get('CDT','name',fallback="NONE")
     PROJECT_DSK          = DATA_PROJECT.get('DSK','name',fallback="NONE")
 
-    info.show(PROJECT_NAME)
+    info.show("PROJECT: " + PROJECT_NAME)
 
     if PROJECT_NAME == "NONE":
         cm.msgError(f"project name in {cm.CFG_PROJECT} does not exist or is empty")
@@ -43,7 +43,7 @@ def create(scope):
     PROJECT_CDT_FILES    = DATA_PROJECT.get('CDT','files',fallback="NONE").strip()
     PROJECT_CONCAT_OUT   = DATA_PROJECT.get('configurations','concatenate',fallback="")        
 
-    cm.showInfoTask(f"Build [green]{PROJECT_NAME} [/]project in progress...")
+    cm.showInfoTask(f"Build project in progress...")
     
     cm.removeContentDirectory(cm.PATH_DISC)
     
@@ -51,7 +51,7 @@ def create(scope):
         if not os.path.exists(folder):
             os.makedirs(folder)
     
-    cm.msgInfo("Check folders project OK")
+    cm.msgCustom("CHECK", "Folders Project.", "green")
     
     createImageDisc(PROJECT_DSK_NAME)
  
@@ -63,19 +63,19 @@ def create(scope):
         PROJECT_CONCAT_OUT   = cm.PATH_DISC + "/" + PROJECT_CONCAT_OUT
         concatAllFiles(cm.PATH_SRC,PROJECT_CONCAT_OUT)
         if not convert2Dos(PROJECT_CONCAT_OUT, PROJECT_CONCAT_OUT):
-            cm.showFoodDataProject("BUILD FAILURE DISC IMAGE", 1)
+            cm.showFoodDataProject("Build failure disc image", 1)
         if not addBas2ImageDisc(PROJECT_DSK_NAME, PROJECT_CONCAT_OUT):
-            cm.showFoodDataProject("BUILD FAILURE DISC IMAGE", 1)
+            cm.showFoodDataProject("Build failure disc image", 1)
         # addamsdos(PROJECT_CONCAT_OUT)
     else:          
         for basfile in glob.glob(os.path.join(cm.PATH_SRC, '*.[bB][aA][sS]')):
             outputbasfile = f"{cm.PATH_DISC}/{cm.getFileExt(basfile)}"
             if not removeComments(basfile, outputbasfile):
-                    cm.showFoodDataProject("BUILD FAILURE DISC IMAGE", 1)
+                    cm.showFoodDataProject("Build failure disc image", 1)
             if not convert2Dos(outputbasfile, outputbasfile): 
-                    cm.showFoodDataProject("BUILD FAILURE DISC IMAGE", 1)
+                    cm.showFoodDataProject("Build failure disc image", 1)
             if not addBas2ImageDisc(PROJECT_DSK_NAME, outputbasfile):
-                cm.showFoodDataProject("BUILD FAILURE DISC IMAGE", 1)
+                cm.showFoodDataProject("Build failure disc image", 1)
             # addamsdos(outputbasfile)  
       
     ########################################
@@ -92,15 +92,15 @@ def create(scope):
         else:
             IMAGE_PAL = DATA_IMAGES.get(IMAGE_NAME,"include_pal",fallback="FALSE")
             if not screens.create(image, IMAGE_MODE, cm.PATH_DISC, False, True):
-                cm.showFoodDataProject("BUILD FAILURE DISC IMAGE", 1)
+                cm.showFoodDataProject("Build failure disc image", 1)
             NEW_FILE = cm.getFile(image).upper()
             if not addBin2ImageDisc(f"{PROJECT_DSK_NAME}", f"{cm.PATH_DISC}/{NEW_FILE}.SCR"):
-                cm.showFoodDataProject("BUILD FAILURE DISC IMAGE", 1)            
+                cm.showFoodDataProject("Build failure disc image", 1)            
             if IMAGE_PAL.upper() == "FALSE":
                 os.remove(f"{cm.PATH_DISC}/{NEW_FILE}.PAL")
             else:
                 if not addBin2ImageDisc(f"{PROJECT_DSK_NAME}", f"{cm.PATH_DISC}/{NEW_FILE}.PAL"):
-                    cm.showFoodDataProject("BUILD FAILURE DISC IMAGE", 1)    
+                    cm.showFoodDataProject("Build failure disc image", 1)    
                                    
     ########################################
     # PROCESING ASCII FILES
@@ -109,7 +109,7 @@ def create(scope):
     for ascii in glob.glob(os.path.join(cm.PATH_SRC, '*.[tT][xX][tT]')):
         shutil.copyfile(ascii,f"{cm.PATH_DISC}/{cm.getFileExt(ascii)}")
         if not addBas2ImageDisc(PROJECT_DSK_NAME, f"{cm.PATH_DISC}/{cm.getFileExt(ascii)}"):
-            cm.showFoodDataProject("BUILD FAILURE DISC IMAGE", 1)
+            cm.showFoodDataProject("Build failure disc image", 1)
 
     ########################################
     # PROCESING SPRITES FILES
@@ -126,7 +126,7 @@ def create(scope):
             cm.msgWarning(f"No configuration {SPRITE_NAME} in sprites.cfg, not process file.")
         else:
             if not sprites.create(sprite,SPRITE_MODE,cm.PATH_DISC,SPRITE_WIDTH,SPRITE_HEIGHT,True):
-                cm.showFoodDataProject("BUILD FAILURE DISC IMAGE", 1)
+                cm.showFoodDataProject("Build failure disc image", 1)
 
     ########################################
     # PROCESING UGBASIC FILES
@@ -137,9 +137,9 @@ def create(scope):
         for ugbfile in glob.glob(os.path.join(cm.PATH_SRC, '*.[uU][gG][bB]')):
             UGBASIC_NAME   = cm.getFileExt(ugbfile)
             if not compileUGBasic(ugbfile, cm.PATH_DISC + "/UGBTEMP.DSK"):
-                cm.showFoodDataProject("BUILD FAILURE DISC IMAGE", 1)
+                cm.showFoodDataProject("Build failure disc image", 1)
             if not addBin2ImageDisc(PROJECT_DSK_NAME, f"{cm.PATH_DISC}/" + cm.getFile(UGBASIC_NAME) + ".BIN"): 
-                cm.showFoodDataProject("BUILD FAILURE DISC IMAGE", 1)
+                cm.showFoodDataProject("Build failure disc image", 1)
     else:
         cm.msgWarning("Mac OSX operating system does not support ugBasic")
     
@@ -149,9 +149,9 @@ def create(scope):
     
     for dskfile in glob.glob(os.path.join(cm.PATH_LIB, '*.[dD][sS][kK]')):
         if not extract2ImageDisc(dskfile,cm.PATH_DISC + "/" + cm.getFile(dskfile) + ".bin"):
-            cm.showFoodDataProject("BUILD FAILURE DISC IMAGE", 1) 
+            cm.showFoodDataProject("Build failure disc image", 1) 
         if not addBin2ImageDisc(PROJECT_DSK_NAME, cm.PATH_DISC + "/" + cm.getFile(dskfile) + ".bin"):
-            cm.showFoodDataProject("BUILD FAILURE DISC IMAGE", 1)   
+            cm.showFoodDataProject("Build failure disc image", 1)   
 
     ########################################
     # PROCESING BIN FILES (LIB)
@@ -161,7 +161,7 @@ def create(scope):
         outputbinfile = f"{cm.PATH_DISC}/{cm.getFileExt(binfile)}"
         shutil.copy2(binfile,outputbinfile)
         if not addBin2ImageDisc(PROJECT_DSK_NAME, outputbinfile):
-            cm.showFoodDataProject("BUILD FAILURE DISC IMAGE", 1)
+            cm.showFoodDataProject("Build failure disc image", 1)
             
     ########################################
     # ADD FILES TO CDT
@@ -175,12 +175,12 @@ def create(scope):
     for cdtfile in cdtfiles:
         file = cm.PATH_DISC + "/" + cdtfile.strip()
         if not cm.fileExist(file):
-            cm.showFoodDataProject("BUILD FAILURE DISC IMAGE", 1)
+            cm.showFoodDataProject("Build failure disc image", 1)
             sys.exit(1)
 
         addFile2CDTImage(file,PROJECT_CDT_NAME)
 
-    cm.endTask("create disc image", "OK")
+    cm.showFoodDataProject("Successfully create disc image", 0)
 
 
 ##
@@ -202,10 +202,10 @@ def compileUGBasic(source, out):
         name = cm.getFile(source)
         if extractUGBC2ImageDisc(out):
             shutil.move(cm.PATH_LIB + "/MAIN.BIN", cm.PATH_DISC + "/" + name.upper() + ".BIN")
-            cm.msgInfo(f"Compile: {cm.getFileExt(source)} ==> " + name.upper() + ".BIN")
+            cm.msgCustom("BUILD", f"{cm.getFileExt(source)} ==> " + name.upper() + ".BIN", "green")
             os.remove(out)
         else:
-            cm.showFoodDataProject("BUILD FAILURE DISC IMAGE", 1) 
+            cm.showFoodDataProject("Build failure disc image", 1) 
         return True
     except subprocess.CalledProcessError as e:
         cm.msgError(cm.getFileExt(source) + f' ==> Error executing command: {e.output.decode()}')
@@ -216,7 +216,7 @@ def concatAllFiles(path, inFile):
     allBasFiles = glob.glob(os.path.join(path, '*.[bB][aA][sS]'))
     for basfile in allBasFiles:
         addContenToFile(inFile,readContentFile(basfile))
-        cm.msgInfo(f"Concat file {cm.getFileExt(basfile)} ==> {cm.getFileExt(inFile)}")
+        cm.msgCustom("CONCAT", f"{cm.getFileExt(basfile)} ==> {cm.getFileExt(inFile)}", "green")
     return
 
 def readContentFile (source):
@@ -242,7 +242,7 @@ def convert2Dos(source, output):
         file.writelines(dos_lines)
 
     files = cm.getFileExt(source)
-    cm.msgInfo(f"Convert unix to dos ==> {cm.getFileExt(source)}")
+    cm.msgCustom("CONVERT", f"{cm.getFileExt(source)} ==> Dos Format File", "green")
     return True
 
 ##
@@ -265,7 +265,7 @@ def removeComments(source, output):
     with open(output, 'w') as file:
         file.writelines(filtered_lines)
     file = cm.getFileExt(source)
-    cm.msgInfo(f"Comments Remove ==> {file}")
+    cm.msgCustom("REMOVE", f"Comments Remove ==> {file}", "green")
     return True
 
 def createImageDisc(imagefile):
@@ -275,17 +275,17 @@ def createImageDisc(imagefile):
         output = subprocess.check_output(cmd, stderr=subprocess.STDOUT)
         if not os.path.isfile(imagefile):
             cm.msgError('Error generating disk image ' + cm.getFileExt(imagefile))
-            cm.showFoodDataProject("BUILD FAILURE DISC IMAGE", 1)
+            cm.showFoodDataProject("Build failure disc image", 1)
         return True
     except subprocess.CalledProcessError as e:
         cm.msgError(f'Error ' + cm.getFileExt(imagefile) + f' executing command: {e.output.decode()}')
-        cm.showFoodDataProject("BUILD FAILURE DISC IMAGE", 1)
+        cm.showFoodDataProject("Build failure disc image", 1)
 
 def addBas2ImageDisc(imagefile, file):
     cmd = [cm.IDSK, imagefile, "-i", file, '-t', '0']
     try:
         output = subprocess.check_output(cmd, stderr=subprocess.STDOUT)
-        cm.msgInfo("Add file " + cm.getFileExt(file) + " ==> " + cm.getFileExt(imagefile))
+        cm.msgCustom("ADD", cm.getFileExt(file) + " ==> " + cm.getFileExt(imagefile), "green")
         return True
     except subprocess.CalledProcessError as e:
         cm.msgError(f'Error ' + cm.getFileExt(imagefile) + f' executing command: {e.output.decode()}')
@@ -295,7 +295,7 @@ def addBin2ImageDisc(imagefile, file):
     cmd = [cm.IDSK, imagefile, "-i", file, '-t', '1']
     try:
         output = subprocess.check_output(cmd, stderr=subprocess.STDOUT)
-        cm.msgInfo("Add file " + cm.getFileExt(file) + " ==> " + cm.getFileExt(imagefile))
+        cm.msgCustom("ADD", cm.getFileExt(file) + " ==> " + cm.getFileExt(imagefile), "green")
         return True
     except subprocess.CalledProcessError as e:
         cm.msgError(f'Error ' + cm.getFileExt(imagefile) + f' executing command: {e.output.decode()}')
@@ -306,7 +306,7 @@ def extract2ImageDisc(imagefile, file):
     cmd = [cm.IDSK, imagefile, "-g", file.upper()]
     try:
         output = subprocess.check_output(cmd, stderr=subprocess.STDOUT)
-        cm.msgInfo("Extract lib " + cm.getFileExt(imagefile) + " ==> " + cm.getFile(imagefile) + ".bin")
+        cm.msgCustom("EXTRAC", f"library " + cm.getFileExt(imagefile) + " ==> " + cm.getFile(imagefile) + ".bin", "green")
         return True
     except subprocess.CalledProcessError as e:
         cm.msgError(f'Error ' + cm.getFileExt(imagefile) + f' executing command: {e.output.decode()}')
@@ -328,7 +328,7 @@ def addamsdos(file):
     cmd = [cm.AMSDOS, file]
     try:
         output = subprocess.check_output(cmd, stderr=subprocess.STDOUT)
-        cm.msgInfo("Add amsdos header ==> " + cm.getFileExt(file))
+        cm.msgCustom("ADD", "Amsdos header ==> " + cm.getFileExt(file), "green")
         return True
     except subprocess.CalledProcessError as e:
         cm.msgError(f'Error ' + cm.getFileExt(file) + f' executing command: {e.output.decode()}')
@@ -346,7 +346,7 @@ def addFile2CDTImage(file,cdtimg):
     cmd = [cm.CPC2CDT,"-t", "-m",typefile, "-r", name.upper(), file,cdtimg]
     try:
         output = subprocess.check_output(cmd)
-        cm.msgInfo("Add file " + cm.getFileExt(file) + " ==> " + cm.getFileExt(cdtimg))
+        cm.msgCustom("ADD", cm.getFileExt(file) + " ==> " + cm.getFileExt(cdtimg), "green")
         return True
     except subprocess.CalledProcessError as e:
         cm.msgError(f'Error ' + cm.getFileExt(file) + f' executing command: {e.output.decode()}')
