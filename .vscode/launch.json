@@ -87,7 +87,7 @@
             "env": {
                 "PYTHONPATH": "${workspaceFolder}",
             },
-            "args": ["--image", "/workspaces/installer/tools/sdk/testing000/img/avatar.png","--mode", "0"] 
+            "args": ["palette","--image", "/workspaces/installer/tools/sdk/testing000/img/avatar.png","--mode", "0"] 
         },
         {
             "name": "CREATE SCREEN",
@@ -99,7 +99,7 @@
             "env": {
                 "PYTHONPATH": "${workspaceFolder}",
             },
-            "args": ["--image", "/workspaces/installer/tools/sdk/testing000/img/avatar.png","--mode", "0","--out","testing001"] 
+            "args": ["screen","--image", "/workspaces/installer/tools/sdk/testing000/img/avatar.png","--mode", "0","--out","testing001"] 
         },
         {
             "name": "CREATE SCREEN DSK",
@@ -111,7 +111,7 @@
             "env": {
                 "PYTHONPATH": "${workspaceFolder}",
             },
-            "args": ["--image", "/workspaces/installer/tools/sdk/testing000/img/avatar.png","--mode", "0","--out","testing001","--dsk"] 
+            "args": ["screen","--image", "/workspaces/installer/tools/sdk/testing000/img/avatar.png","--mode", "0","--out","testing001","--dsk"] 
         },
         {
             "name": "CREATE SPRITE",
@@ -123,7 +123,7 @@
             "env": {
                 "PYTHONPATH": "${workspaceFolder}",
             },
-            "args": ["--image", "/workspaces/installer/tools/sdk/testing000/img/avatar.png","--mode", "0","--out","testing001","--height","12", "--width","12"] 
+            "args": ["sprite","--image", "/workspaces/installer/tools/sdk/testing000/img/avatar.png","--mode", "0","--out","testing001","--height","12", "--width","12"] 
         }
     ]
 }
