@@ -277,10 +277,10 @@ if [ "$INSTALL" == "full" ]; then
     if [ -f "$HOME/.bashrc" ]; then
         if ! grep -qxF "export CPCREADY=$PATH_INSTALL" "$HOME/.bashrc"; then
             echo "export CPCREADY=$PATH_INSTALL" >> "$HOME/.bashrc"
-            echo "export CPCREADY_CFG=$PATH_INSTALL/CPCReady/cfg" >> "$HOME/.bashrc"
-            echo "export PATH=\$PATH:$PATH_INSTALL/CPCReady/tools/bin" >> "$HOME/.bashrc"
-            echo "export PATH=\$PATH:$PATH_INSTALL/CPCReady/tools/z88dk/bin" >> "$HOME/.bashrc"
-            echo "export ZCCCFG=$PATH_INSTALL/CPCReady/tools/z88dk/lib/config" >> "$HOME/.bashrc"
+            echo "export CPCREADY_CFG=$PATH_INSTALL/cfg" >> "$HOME/.bashrc"
+            echo "export PATH=\$PATH:$PATH_INSTALL/tools/bin" >> "$HOME/.bashrc"
+            echo "export PATH=\$PATH:$PATH_INSTALL/tools/z88dk/bin" >> "$HOME/.bashrc"
+            echo "export ZCCCFG=$PATH_INSTALL/tools/z88dk/lib/config" >> "$HOME/.bashrc"
             echo "${GREEN}ADD      ${NC}Environment variables to .bashrc [${GREEN}OK${NC}]"
         else
             echo "${YELLOW}WARNING  ${NC}Environment variables already exist in .bashrc"
@@ -292,10 +292,10 @@ if [ "$INSTALL" == "full" ]; then
     if [ -f "$HOME/.zshrc" ]; then
         if ! grep -qxF "export CPCREADY=$PATH_INSTALL" "$HOME/.zshrc"; then
             echo "export CPCREADY=$PATH_INSTALL" >> "$HOME/.zshrc"
-            echo "export CPCREADY_CFG=$PATH_INSTALL/CPCReady/cfg" >> "$HOME/.zshrc"
-            echo "export PATH=\$PATH:$PATH_INSTALL/CPCReady/tools/bin" >> "$HOME/.zshrc"
-            echo "export PATH=\$PATH:$PATH_INSTALL/CPCReady/tools/z88dk/bin" >> "$HOME/.zshrc"
-            echo "export ZCCCFG=$PATH_INSTALL/CPCReady/tools/z88dk/lib/config" >> "$HOME/.zshrc"
+            echo "export CPCREADY_CFG=$PATH_INSTALL/cfg" >> "$HOME/.zshrc"
+            echo "export PATH=\$PATH:$PATH_INSTALL/tools/bin" >> "$HOME/.zshrc"
+            echo "export PATH=\$PATH:$PATH_INSTALL/tools/z88dk/bin" >> "$HOME/.zshrc"
+            echo "export ZCCCFG=$PATH_INSTALL/tools/z88dk/lib/config" >> "$HOME/.zshrc"
             echo "${GREEN}ADD      ${NC}Environment variables to .zshrc [${GREEN}OK${NC}]"
         else
             echo "${YELLOW}WARNING  ${NC}Environment variables already exist in .zshrc"

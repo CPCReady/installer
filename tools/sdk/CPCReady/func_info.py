@@ -21,7 +21,7 @@ console = Console()
 #@
 # param cpc: Model CPC
 ##
-def show():
+def show(description="Development Environment for User"):
     print()
             
     cpc = random.choice(cm.CPC_MODELS)
@@ -32,10 +32,7 @@ def show():
     elif cpc == "664":
         lineSize = 75
     
-    if os.getenv("ENVIRONMENT") == "USER":
-        Linea3 = f"Development Environment for User".ljust(lineSize, " ")
-    else:
-        Linea3 = f"Solution Development Environment".ljust(lineSize, " ")
+    Linea3 = description.ljust(lineSize, " ")
     Linea1 = f"CPCReady v{version}".ljust(lineSize, " ")
     Linea2 = f"CLI Software Developer Kit for programming Amstrad Basic/Ugbasic".ljust(lineSize, " ")
     

@@ -5,6 +5,7 @@ import shutil
 from rich import print
 from rich.console import Console
 from CPCReady import common as cm
+from CPCReady import func_info as info
 
 console = Console()
 
@@ -18,6 +19,8 @@ console = Console()
 def create(project):
 
     folder_project = f"{project}"
+    
+    info.show()
 
     cm.showInfoTask(f"Create project in progress...")
     
