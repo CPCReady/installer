@@ -35,6 +35,7 @@ def create(project):
     ########################################
     # CREATE PROJECT FOLDERS
     ########################################
+    
     for folders in cm.subfolders:
         os.makedirs(f"{folder_project}/{folders}")
         cm.msgCustom("CREATE", f"{folder_project}/{folders}", "green")
