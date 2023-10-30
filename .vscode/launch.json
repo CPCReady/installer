@@ -90,7 +90,7 @@
             "args": ["palette","--image", "/workspaces/installer/tools/sdk/testing000/img/avatar.png","--mode", "0"] 
         },
         {
-            "name": "CREATE SCREEN",
+            "name": "CPC SCREEN",
             "type": "python",
             "request": "launch",
             "module": "CPCReady.main",
@@ -102,7 +102,7 @@
             "args": ["screen","--image", "/workspaces/installer/tools/sdk/testing000/img/avatar.png","--mode", "0","--out","testing001"] 
         },
         {
-            "name": "CREATE SCREEN DSK",
+            "name": "CPC SCREEN DSK",
             "type": "python",
             "request": "launch",
             "module": "CPCReady.main",
@@ -114,7 +114,7 @@
             "args": ["screen","--image", "/workspaces/installer/tools/sdk/testing000/img/avatar.png","--mode", "0","--out","testing001","--dsk"] 
         },
         {
-            "name": "CREATE SPRITE",
+            "name": "CPC SPRITE",
             "type": "python",
             "request": "launch",
             "module": "CPCReady.main",
