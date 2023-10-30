@@ -21,14 +21,6 @@ setup(
     description=DESCRIPTION,
     license="GPL",
     packages=find_packages(),
-    # package_data={
-    #     'CPCReady': [
-    #         'templates/*',
-    #         'tools/darwin/*',
-    #         'tools/linux/*',
-    #         'tools/win64/*'
-    #     ],
-    # },
     install_requires=[
         'click',
         'configparser',
