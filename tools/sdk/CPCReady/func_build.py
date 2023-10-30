@@ -7,6 +7,7 @@ import glob
 from CPCReady import common as cm
 from CPCReady import func_screen as screens
 from CPCReady import func_sprite as sprites
+from CPCReady import func_info as info
 
 def create(scope):
 
@@ -24,7 +25,9 @@ def create(scope):
     PROJECT_AUTHOR       = DATA_PROJECT.get('general','author',fallback="NONE")
     PROJECT_CDT          = DATA_PROJECT.get('CDT','name',fallback="NONE")
     PROJECT_DSK          = DATA_PROJECT.get('DSK','name',fallback="NONE")
-    
+
+    info.show(PROJECT_NAME)
+
     if PROJECT_NAME == "NONE":
         cm.msgError(f"project name in {cm.CFG_PROJECT} does not exist or is empty")
         sys.exit(1)    
