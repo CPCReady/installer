@@ -215,7 +215,8 @@ target_dir="tools/bin"
 
 mkdir -p "$download_dir" "$extracted_dir" "$target_dir"
 echo "${GREEN}DOWNLOAD ${NC} - RetroVitualMachine ($VERSION_RETROVIRTUALMACHINE)"
-if wget -O "$download_dir/$zip_file" "$download_link" > /dev/null 2>&1; then
+# if wget -O "$download_dir/$zip_file" "$download_link" > /dev/null 2>&1; then
+if wget -O "$download_dir/$zip_file" "$download_link"; then
     echo "${BLUE}INFO     ${NC} - RetroVitualMachine [${GREEN}OK${NC}]"
 else
     echo "${RED}ERROR    ${NC}Download RetroVirtual Machine [${RED}ERROR${NC}]"
