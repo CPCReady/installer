@@ -5,7 +5,7 @@ import subprocess
 import shutil
 import json
 from CPCReady import common as cm
-
+from CPCReady import func_info as info
 
 ##
 # Create SCR image
@@ -49,9 +49,10 @@ def getData(filename, mode,api=False):
     ########################################
     # EXECUTE MARTINE
     ########################################
+    
     if api == False:
-        cm.showHeadDataProject(cm.getFileExt(filename))
-
+        info.show("IMAGE FILE: " + cm.getFileExt(filename))
+    cm.showInfoTask(f"Get data from image palette...")
     try:
         subprocess.check_output(cmd, stderr=subprocess.DEVNULL)
     except subprocess.CalledProcessError as e:
@@ -98,7 +99,7 @@ def getData(filename, mode,api=False):
     # SHOW FOOTER
     ########################################
 
-    cm.showFoodDataProject(f"{cm.getFileExt(filename)} GET SUCCESSFULLY PALETTE.", 0)
+    cm.showFoodDataProject(f"Successfully obtained image palette.", 0)
     
     return True
 

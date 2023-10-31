@@ -5,7 +5,7 @@ import subprocess
 import shutil
 import json
 from CPCReady import common as cm
-
+from CPCReady import func_info as info
 
 ##
 # Create SCR image
@@ -53,7 +53,8 @@ def create(filename, mode, fileout, dsk, api=False):
     # EXECUTE MARTINE
     ########################################
     if api == False:
-        cm.showHeadDataProject(cm.getFileExt(filename))
+        info.show("CONVER IMAGE: " + cm.getFileExt(filename))
+    cm.showInfoTask(f"Conver image to scr...")
 
     try:
         if fileout:
@@ -63,7 +64,7 @@ def create(filename, mode, fileout, dsk, api=False):
             if not dsk:
                 shutil.copy2(os.path.join(IMAGE_TEMP_PATH, IMAGE_TMP_FILE.upper() + '.PAL'), fileout)
                 shutil.copy2(os.path.join(IMAGE_TEMP_PATH, IMAGE_TMP_FILE.upper() + '.SCR'), fileout)
-                cm.msgInfo(f"Create SCREEN File  ==> " + cm.getFileExt(fileout + "/" + IMAGE_TMP_FILE.upper() + ".SCR"))
+                cm.msgCustom("CONVERT", f"{cm.getFileExt(filename)} ==> " + cm.getFileExt(fileout + "/" + IMAGE_TMP_FILE.upper() + ".SCR"), "green")
         else:
             subprocess.check_output(cmd, stderr=subprocess.DEVNULL)
     except subprocess.CalledProcessError as e:
@@ -76,10 +77,10 @@ def create(filename, mode, fileout, dsk, api=False):
         
         if dsk:
             if api == False:
-                cm.showFoodDataProject(IMAGE_TMP_FILE.upper() + ".DSK NOT CREATED.", 1)
+                cm.showFoodDataProject(f"Failed to create scr in dsk image file.",1)
         else:
             if api == False:
-                cm.showFoodDataProject(f"{fileout}/{IMAGE_TMP_FILE.upper()}.SCR NOT CREATED.", 1)
+                cm.showFoodDataProject(f"Failed to convert image.",1)
             return False
 
     ########################################
@@ -108,11 +109,12 @@ def create(filename, mode, fileout, dsk, api=False):
             os.makedirs(fileout)
         shutil.copy2(os.path.join(IMAGE_TEMP_PATH, IMAGE_TMP_FILE.upper() + '.DSK'),
                      fileout + '/' + IMAGE_TMP_FILE.upper() + '.DSK')
-        cm.msgInfo(f"Create IMAGE File: {fileout}/{IMAGE_TMP_FILE.upper()}.DSK")
+        cm.msgCustom("CREATE", f"{cm.getFile(filename).upper()}.SCR ==> {fileout}/{IMAGE_TMP_FILE.upper()}.DSK", "green")
 
-    cm.msgInfo(f"       SW PALETTE      : {sw_palette}")
-    cm.msgInfo(f"       HW PALETTE      : {hw_palette}")
-    cm.msgInfo(f"       UGBASIC PALETTE : {ug_palette}")
+    cm.msgCustom("GET", f"Software Palette: {sw_palette}", "green")
+    cm.msgCustom("GET", f"Hardware Palette: {hw_palette}", "green")
+    cm.msgCustom("GET", f"Ugbasic  Palette: {ug_palette}", "green")
+
 
     ########################################
     # DELETE TEMPORAL FILES
@@ -126,10 +128,10 @@ def create(filename, mode, fileout, dsk, api=False):
 
     if dsk:
         if api == False:
-            cm.showFoodDataProject(IMAGE_TMP_FILE.upper() + ".DSK SUCCESSFULLY CREATED.", 0)
+            cm.showFoodDataProject(f"Image conversion done successfully in Image file.", 0)
     else:
         if api == False:
-            cm.showFoodDataProject(f"{fileout}/{IMAGE_TMP_FILE.upper()}.SCR SUCCESSFULLY CREATED.", 0)
+            cm.showFoodDataProject(f"Image conversion done successfully.", 0)
     
     return True
 

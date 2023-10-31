@@ -5,7 +5,7 @@ import subprocess
 import shutil
 import json
 from CPCReady import common as cm
-
+from CPCReady import func_info as info
 
 ##
 # Create SCR image
@@ -53,7 +53,8 @@ def create(filename, mode, fileout, height, width, api=False):
     # EXECUTE MARTINE
     ########################################
     if api == False:
-        cm.showHeadDataProject(cm.getFileExt(filename))
+        info.show("SPRITE FILES: " + cm.getFileExt(filename))
+    cm.showInfoTask(f"Generate sprite files...")
 
     try:
         if fileout:
@@ -66,11 +67,10 @@ def create(filename, mode, fileout, height, width, api=False):
         cm.msgError(f'Error ' + cm.getFileExt(filename) + f' executing command: {e.output.decode()}')
         cm.rmFolder(IMAGE_TEMP_PATH)
         if api == False:
-            cm.showFoodDataProject(IMAGE_TMP_FILE.upper() + ".DSK NOT CREATED.", 1)
+            cm.showFoodDataProject(f"Failed to generate sprites files.",1)
         else:
-            cm.showFoodDataProject(f"{fileout}/{IMAGE_TMP_FILE.upper()}.SCR NOT CREATED.", 1)
             return False
-
+            
     ########################################
     # READ JSON PALETTE
     ########################################
@@ -80,7 +80,13 @@ def create(filename, mode, fileout, height, width, api=False):
 
     sw_palette = str(data['palette'])
     hw_palette = str(data['hardwarepalette'])
-
+    ugBasic_palette = []
+    
+    for color in data['palette']:
+        palette_amstrad = cm.CONVERSION_PALETTE.get("COLOR_" + color)
+        ugBasic_palette.append(palette_amstrad)
+    
+    ug_palette = str(ugBasic_palette)
     ########################################
     # GENERATE C FILE
     ########################################
@@ -103,8 +109,7 @@ def create(filename, mode, fileout, height, width, api=False):
                     output_file.write(line.replace("db ", "   "))
             output_file.write("};\n")
 
-    cm.msgInfo(f"Create C   File ==> " + IMAGE_TMP_FILE.upper() + ".C")
-    
+    cm.msgCustom("CREATE", fileout + "/" + IMAGE_TMP_FILE.upper() + ".C", "green") 
     ########################################
     # GENERATE ASM FILE
     ########################################
@@ -129,13 +134,13 @@ def create(filename, mode, fileout, height, width, api=False):
                     output_file.write(line)
             output_file.write("\n;------ END SPRITE --------\n")
 
-    cm.msgInfo(f"Create ASM File ==> " + IMAGE_TMP_FILE.upper() + ".ASM")
-    cm.msgInfo(f"       SW PALETTE : {sw_palette}")
-    cm.msgInfo(f"       HW PALETTE : {hw_palette}")
+    cm.msgCustom("CREATE", fileout + "/" + IMAGE_TMP_FILE.upper() + ".ASM", "green")
+    cm.msgCustom("GET", f"Software Palette: {sw_palette}", "green")
+    cm.msgCustom("GET", f"Hardware Palette: {hw_palette}", "green")
+    cm.msgCustom("GET", f"Ugbasic  Palette: {ug_palette}", "green")
 
     if api == False:
-        cm.showFoodDataProject("SPRITE FILES SUCCESSFULLY CREATED.", 0)
-
+        cm.showFoodDataProject(f"Generation of sprite files done successfully.", 0)
     cm.rmFolder(IMAGE_TEMP_PATH)
     
     return True
