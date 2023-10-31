@@ -134,6 +134,7 @@ def create(filename, mode, fileout, height, width, api=False):
                     output_file.write(line)
             output_file.write("\n;------ END SPRITE --------\n")
 
+
     cm.msgCustom("CREATE", fileout + "/" + IMAGE_TMP_FILE.upper() + ".ASM", "green")
     cm.msgCustom("GET", f"Software Palette: {sw_palette}", "green")
     cm.msgCustom("GET", f"Hardware Palette: {hw_palette}", "green")
