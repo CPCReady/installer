@@ -194,11 +194,17 @@ def compileUGBasic(source, out):
         variables_entorno = os.environ.copy()
         variables_entorno["PATH"] = cm.PWD + ":" + variables_entorno["PATH"]
         # cmd = ["." + cm.UGBASICSH, out,source]
+        # if cm.fileExist(cm.PWD + "/main.bin"):
+        #     os.remove(cm.PWD + "/main.bin")
+            
         cmd = [cm.UGBASIC, "-O","dsk","-o", out,source ]
         output = subprocess.check_output(cmd, stderr=subprocess.STDOUT)
 
-        if cm.fileExist(cm.PWD + "/main.bin"):
-            os.remove(cm.PWD + "/main.bin")
+        # if cm.fileExist(cm.PWD + "/main.bin") == False:
+        if not os.path.isfile(cm.PWD + "/main.bin"):
+            cm.msgError ("Create bin: " + str(output))
+            sys.exit(1)
+        
         name = cm.getFile(source)
         if extractUGBC2ImageDisc(out):
             shutil.move(cm.PATH_LIB + "/MAIN.BIN", cm.PATH_DISC + "/" + name.upper() + ".BIN")
