@@ -1,91 +1,62 @@
-
-name: Upload PYPY.ORG
-# on:
-#   push:
-#     branches:
-#       - 28-añadir-crear-cabecera-amsdos-para-ficheros-basic
+name: generate release
 on:
-  pull_request:
-    branches:
-      - main
-    types:
-      - closed
-
+    push:
+      # Sequence of patterns matched against refs/tags
+      tags:
+        - '*' # Push events to matching v*, i.e. v1.0, v20.15.10
 permissions:
-  contents: read
+    contents: write
 
 jobs:
-  deploy:
-
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v3
-    - name: Set up Python
-      uses: actions/setup-python@v3
-      with:
-        python-version: '3.x'
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install build
-    - name: Build package
-      run: python -m build
-    - name: Publish package to TEST PYPI
-      uses: pypa/gh-action-pypi-publish@release/v1
-      with:
-        user: __token__
-        password: ${{ secrets.PYPI_SECRET }}
-        skip-existing: false
-        verbose: true
-# on:
-#   pull_request:
-#     branches:
-#       - main
-#     types:
-#       - closed
-
-# permissions:
-#   contents: read
-
-
-# jobs:
-#     release-build:
-#       runs-on: ubuntu-latest
-  
-#       steps:
-#         - uses: actions/checkout@v4
-#         - uses: actions/setup-python@v4
-#           with:
-#             python-version: "3.x"
-  
-#         - name: build release distributions
-#           run: |
-#             python -m pip install --upgrade pip
-#             python -m build
-  
-#         - name: upload windows dists
-#           uses: actions/upload-artifact@v3
-#           with:
-#             name: release-dists
-#             path: dist/
-  
-#     pypi-publish:
-#       runs-on: ubuntu-latest
-#       needs:
-#         - release-build
-#       permissions:
-#         id-token: write
-  
-#       steps:
-#         - name: Retrieve release distributions
-#           uses: actions/download-artifact@v3
-#           with:
-#             name: release-dists
-#             path: dist/
-  
-#         - name: Publish release distributions to PyPI
-#           uses: pypa/gh-action-pypi-publish@release/v1
-
-
-
+    build:
+      name: Create Release
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout code
+          uses: actions/checkout@v2
+        - name: set Environment Variables
+          id: set_env_var
+          run: |
+            VERSION=$(cat RELEASE)
+            RELEASEBODY=$(awk -v RS='Release ' '/'$VERSION':(.*)/ {print $0}' CHANGES.md)
+            RELEASEBODY="${RELEASEBODY//'%'/'%25'}"
+            RELEASEBODY="${RELEASEBODY//$'\n'/'%0A'}"
+            RELEASEBODY="${RELEASEBODY//$'\r'/'%0D'}"       
+            echo "::set-output name=version::${VERSION}"
+            echo "::set-output name=RELEASEBODY::${RELEASEBODY}"
+          env:
+            REPOSITORY: ${{ github.event.repository.name }}
+        - name: build project
+          run: |
+            [ -d .github ] && rm -r .github
+            [ -d .vscode ] && rm -r .vscode
+            [ -d .devcontainer ] && rm -r .devcontainer
+            zip --junk-paths CPCReady-Installer *.*
+        - name: Archive code coverage results
+          uses: actions/upload-artifact@v3
+          with:
+            name: CPCReady-Installer
+            path: CPCReady-Installer.zip        
+        - name: Create Release
+          id: create_release
+          uses: actions/create-release@v1
+          env:
+              GITHUB_TOKEN: ${{ secrets.PUBLISH_GITHUB }}
+          with:
+            tag_name: ${{ steps.set_env_var.outputs.version }}
+            release_name: Release ${{ steps.set_env_var.outputs.version }}
+            body_path: docs/versions/${{ steps.set_env_var.outputs.version }}.md
+            # body: |
+            #     Changes Version ${{ steps.set_env_var.outputs.RELEASEBODY }}
+            draft: false
+            prerelease: false
+        - name: Upload Release Asset
+          id: upload-release-asset 
+          uses: actions/upload-release-asset@v1
+          env:
+            GITHUB_TOKEN: ${{ secrets.PUBLISH_GITHUB }}
+          with:
+            upload_url: ${{ steps.create_release.outputs.upload_url }}
+            asset_path: ./CPCReady-Installer.zip
+            asset_name: CPCReady-Installer.zip
+            asset_content_type: application/zip
