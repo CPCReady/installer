@@ -1,7 +1,7 @@
 
 ##
 <p align="center">
-<img src="docs/images/CPCReady_logo.png" 
+<img src="images/CPCReady_logo.png" 
         alt="CPCReady" 
         style="display: block; margin: 0 auto" />
 </p>
