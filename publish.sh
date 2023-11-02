@@ -1,7 +1,7 @@
 #!/bin/bash
 
 generateChanges() {
-    carpeta="versions"
+    carpeta=".versions"
     archivo_concatenado="CHANGES.md"
     if [ -e $archivo_concatenado ]; then
         rm $archivo_concatenado
@@ -19,7 +19,7 @@ if [ "$#" -eq 0 ]; then
     exit 1
 fi
 
-file_version="versions/$1.md"
+file_version=".versions/$1.md"
 
 if [ -e "$file_version" ]; then
     echo "Exite la info de la version $1."
