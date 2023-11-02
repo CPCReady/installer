@@ -21,7 +21,7 @@ console = Console()
 #@
 # param cpc: Model CPC
 ##
-def show(description="Development Environment for User"):
+def show(description="👉 Development Environment for User"):
     print()
             
     cpc = random.choice(cm.CPC_MODELS)
@@ -32,9 +32,9 @@ def show(description="Development Environment for User"):
     elif cpc == "664":
         lineSize = 75
     
-    Linea3 = description.ljust(lineSize, " ")
+    Linea3 = description.ljust(lineSize - 1, " ")
     Linea1 = f"CPCReady v{version}".ljust(lineSize, " ")
-    Linea2 = f"CLI Software Developer Kit for programming Amstrad Basic/Ugbasic".ljust(lineSize, " ")
+    Linea2 = f"👉 https://cpcready.github.io/doc/".ljust(lineSize - 1, " ")
     
 
     CPC464 = f"""[bold white]{Linea1}[/]╔═╗╔═╗╔═╗ ┏┓┏┓┏┓ ┌─────────────┐  ON 🟢
