@@ -36,7 +36,6 @@ def show(description="👉 Development Environment for User"):
     Linea1 = f"CPCReady v{version}".ljust(lineSize, " ")
     Linea2 = f"👉 https://cpcready.github.io/doc/".ljust(lineSize - 1, " ")
     
-
     CPC464 = f"""[bold white]{Linea1}[/]╔═╗╔═╗╔═╗ ┏┓┏┓┏┓ ┌─────────────┐  ON 🟢
 [bold white]{Linea2}[/]║  ╠═╝║   ┃┃┣┓┃┃ │[red] ███ [green]███ [blue]███ [white]│
 [bold white]{Linea3}[/]╚═╝╩  ╚═╝ ┗╋┗┛┗╋ └─────────────┘ COLOR"""
