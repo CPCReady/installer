@@ -32,7 +32,8 @@ generateChanges
 
 PUBLISH_DATE=$(date '+%Y-%m-%d %H:%M:%S')
 
-echo $1 > RELEASE
+echo "$1" > RELEASE
+echo "__version__ = '$1'" > tools/sdk/CPCReady/__init__.py
 
 git add .
 git commit -m "Change Release file"

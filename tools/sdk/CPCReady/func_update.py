@@ -85,26 +85,26 @@ def version(check=True):
     
     github_version = get_latest_release()
     install_version= get_install_release()
-    
+
     if not is_version_format(github_version):
         if check == False:
             print()
             cm.msgWarning("It is not possible to recover the last published version.")
-        return True
+        return "99.99.99"
     if not is_version_format(install_version):
         if check == False:
             print()
             cm.msgWarning("It is not possible to recover the last install version.")
-        return True
+        return "99.99.99"
     
     v1 = LooseVersion(install_version)
     v2 = LooseVersion(github_version)
 
     if check == True:
         if v2 > v1 :
-            print()
-            console.print(f"[bold yellow] New version ({github_version}) of CPCready. Please Upgrade.[/]")
-            return True
+            return github_version
+        else:
+            return False
     else:
         SETUP = os.getenv("CPCREADY") + "/setup.sh"
         cmd = [SETUP, "upgrade"]
@@ -118,5 +118,6 @@ def version(check=True):
         if codigo_salida != 0:
             print()
             cm.msgError("Updating the version of CPCReady.")
+
  
     
