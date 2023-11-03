@@ -193,7 +193,7 @@ def launch(file,emulator):
     if not cm.fileExist(RVM_CPC_IMAGE):
         sys.exit(1)  
     
-    info.show("DSK FILE: " + RVM_CPC_IMAGE)
+    info.show("👉 DSK FILE: " + RVM_CPC_IMAGE)
     
     cm.showInfoTask(f"Launch disc image file in progress...")
     

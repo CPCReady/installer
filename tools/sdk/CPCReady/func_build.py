@@ -23,10 +23,11 @@ def create(scope):
     COUNT                = 0
     PROJECT_NAME         = DATA_PROJECT.get('general','name',fallback="NONE")
     PROJECT_AUTHOR       = DATA_PROJECT.get('general','author',fallback="NONE")
+    PROJECT_63_FILES     = DATA_PROJECT.get('general','nomenclature63',fallback="NO").strip()
     PROJECT_CDT          = DATA_PROJECT.get('CDT','name',fallback="NONE")
     PROJECT_DSK          = DATA_PROJECT.get('DSK','name',fallback="NONE")
 
-    info.show("PROJECT: " + PROJECT_NAME)
+    info.show("👉 PROJECT: " + PROJECT_NAME)
 
     if PROJECT_NAME == "NONE":
         cm.msgError(f"project name in {cm.CFG_PROJECT} does not exist or is empty")
@@ -44,7 +45,14 @@ def create(scope):
     PROJECT_CONCAT_OUT   = DATA_PROJECT.get('configurations','concatenate',fallback="")        
 
     cm.showInfoTask(f"Build project in progress...")
-    
+
+    if PROJECT_63_FILES.upper() == "YES":
+        check_subfolders = ["src","lib","img","spr"]
+        for carpeta in check_subfolders:
+            if not check_nomenclature63(carpeta):
+                cm.msgError(f"Folder '{carpeta}' contains files with names longer than 6 characters.")
+                cm.showFoodDataProject("Build failure disc image", 1)
+
     cm.removeContentDirectory(cm.PATH_DISC)
     
     for folder in cm.subfolders:
@@ -370,3 +378,16 @@ def createImageCDT(imagefile):
     except subprocess.CalledProcessError as e:
         cm.msgError(f'Error ' + cm.getFileExt(imagefile) + f' executing command: {e.output.decode()}')
         cm.showFoodDataProject("BUILD FAILURE CDT IMAGE", 1)
+
+
+
+def check_nomenclature63(path):
+    try:
+        archivos = os.listdir(path)
+        for archivo in archivos:
+            if len(archivo) > 6:
+                return False
+        return True
+    except FileNotFoundError:
+
+        return True

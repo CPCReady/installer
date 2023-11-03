@@ -51,7 +51,7 @@ def getData(filename, mode,api=False):
     ########################################
     
     if api == False:
-        info.show("IMAGE FILE: " + cm.getFileExt(filename))
+        info.show("👉 IMAGE FILE: " + cm.getFileExt(filename))
     cm.showInfoTask(f"Get data from image palette...")
     try:
         subprocess.check_output(cmd, stderr=subprocess.DEVNULL)

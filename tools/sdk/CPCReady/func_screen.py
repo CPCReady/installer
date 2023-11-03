@@ -53,7 +53,7 @@ def create(filename, mode, fileout, dsk, api=False):
     # EXECUTE MARTINE
     ########################################
     if api == False:
-        info.show("CONVER IMAGE: " + cm.getFileExt(filename))
+        info.show("👉 CONVER IMAGE: " + cm.getFileExt(filename))
     cm.showInfoTask(f"Conver image to scr...")
 
     try:
