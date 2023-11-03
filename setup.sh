@@ -1,6 +1,8 @@
 #!/bin/bash
 ##-----------------------------LICENSE NOTICE------------------------------------
-##  CPCReady: Software Developer Kit for programming in Amstrad Basic and Ugbasic
+##  CPCReady: SDK for programming in Locomotive Amstrad Basic and Basic Compiled
+##            with Ugbasic (https://ugbasic.iwashere.eu/)
+##
 ##  Copyright (C) 2023 destroyer
 ##
 ##  This program is free software: you can redistribute it and/or modify
@@ -148,6 +150,12 @@ if [ "$INSTALL" == "upgrade" ]; then
         echo "${BLUE}INFO     ${NC} - No need to update."
         exit 0
     fi
+    texto_to_check="Ya está actualizado."
+    if [[ $upgrade == *$texto_to_check* ]]; then
+        echo "${BLUE}INFO     ${NC} - No need to update."
+        exit 0
+    fi
+    
     echo "${BLUE}UPDATE   ${NC} - $upgrade"
 else
     echo "${BLUE}INFO     ${NC}The application is updated"
