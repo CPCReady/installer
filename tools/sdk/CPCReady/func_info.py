@@ -23,7 +23,7 @@ console = Console()
 #@
 # param cpc: Model CPC
 ##
-def show(description="👉 Development Environment for User"):
+def show(description = True):
     print()
             
 #     cpc = random.choice(cm.CPC_MODELS)
@@ -77,5 +77,8 @@ def show(description="👉 Development Environment for User"):
     BANNER.add_row(LOGOCPCREADY)
     console.print(BANNER)
 
-    
+    if description:
+        print()
+        print("[bold white]Github: [/]https://github.com/CPCReady/installer")
+        print("[bold white]Docs  : [/]https://cpcready.github.io/doc/")
     

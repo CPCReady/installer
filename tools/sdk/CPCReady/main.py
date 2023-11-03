@@ -12,6 +12,7 @@ from CPCReady import func_update as update
 from CPCReady import common as cm
 import logging
 import requests
+
 requests.packages.urllib3.disable_warnings()
 logging.getLogger("requests").setLevel(logging.WARNING)
 
@@ -22,8 +23,8 @@ def main():
     """ CLI SDK for programming in Amstrad Locomotive Basic and Compiled Basic with Ugbasic. """
 
 @main.command()
-@click.option('--file', '-f',required=False, help="File with emulator configurations")
-@click.option('--setting', '-s',required=True, help="Emulator Settings Name")
+@click.option('--file', '-f',   required=False, help="File with emulator configurations")
+@click.option('--setting', '-s',required=True,  help="Emulator Settings Name")
 
 def run(file, setting):
     """ Execute DSK/CDT in emulator. """
@@ -86,7 +87,7 @@ def build(scope):
 def info():
     """ Show infor CPCReady. """
     try:
-        information.show()
+        information.show(True)
     except Exception as e:
         raise Exception(f"Error {str(e)}")
 

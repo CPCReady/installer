@@ -47,7 +47,7 @@ def name63 (name):
 
 def create():
 
-    info.show()
+    info.show(False)
 
     questions = [
         inquirer.List("nomenclatura", message="You want to activate the nomenclature 6:3?", choices=["Yes", "No"]),

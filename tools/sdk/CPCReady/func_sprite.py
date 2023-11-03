@@ -53,7 +53,8 @@ def create(filename, mode, fileout, height, width, api=False):
     # EXECUTE MARTINE
     ########################################
     if api == False:
-        info.show("👉 SPRITE FILES: " + cm.getFileExt(filename))
+        #info.show("👉 SPRITE FILES: " + cm.getFileExt(filename))
+        info.show(False)
     cm.showInfoTask(f"Generate sprite files...")
 
     try:

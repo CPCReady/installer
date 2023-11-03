@@ -27,8 +27,8 @@ def create(scope):
     PROJECT_CDT          = DATA_PROJECT.get('CDT','name',fallback="NONE")
     PROJECT_DSK          = DATA_PROJECT.get('DSK','name',fallback="NONE")
 
-    info.show("👉 PROJECT: " + PROJECT_NAME)
-
+    # info.show("👉 PROJECT: " + PROJECT_NAME)
+    info.show(False)
     if PROJECT_NAME == "NONE":
         cm.msgError(f"project name in {cm.CFG_PROJECT} does not exist or is empty")
         sys.exit(1)    
@@ -44,7 +44,7 @@ def create(scope):
     PROJECT_CDT_FILES    = DATA_PROJECT.get('CDT','files',fallback="NONE").strip()
     PROJECT_CONCAT_OUT   = DATA_PROJECT.get('configurations','concatenate',fallback="")        
 
-    cm.showInfoTask(f"Build project in progress...")
+    cm.showInfoTask(f"Build project " + PROJECT_NAME + " in progress...")
 
     if PROJECT_63_FILES.upper() == "YES":
         check_subfolders = ["src","lib","img","spr"]
