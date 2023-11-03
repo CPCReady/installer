@@ -35,8 +35,8 @@ PUBLISH_DATE=$(date '+%Y-%m-%d %H:%M:%S')
 echo $1 > RELEASE
 
 git add .
-git commit -m "Release $1 ($PUBLISH_DATE)"
+git commit -m "Change Release file"
 git push
 
-git tag $1 -m "$2"
+git tag $1 -m "Publish Release $1 ($PUBLISH_DATE)"
 git push --tags
