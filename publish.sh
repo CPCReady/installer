@@ -22,7 +22,7 @@ fi
 file_version=".versions/$1.md"
 
 if [ -e "$file_version" ]; then
-    echo "Exite la info de la version $1."
+    echo "Existe la info de la version $1."
 else
     echo "Error: No existen los cambios para la version $1."
     exit 1
