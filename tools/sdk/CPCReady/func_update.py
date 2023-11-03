@@ -101,31 +101,58 @@ def get_install_release ():
 #
 # @param check: if true only check / if false upgrade version
 ##
-def version(check=True):
+
+def check_version():
     
     github_version = get_latest_release().replace("Release ","")
     install_version= get_install_release()
 
-    if not is_version_format(github_version):
-        if check == False:
-            print()
-            cm.msgWarning("It is not possible to recover the last published version.")
-        return "99.99.99"
-    if not is_version_format(install_version):
-        if check == False:
-            print()
-            cm.msgWarning("It is not possible to recover the last install version.")
-        return "99.99.99"
+    # if not is_version_format(github_version):
+    #     if check == False:
+    #         print()
+    #         cm.msgWarning("It is not possible to recover the last published version.")
+    #     return "99.99.99"
+    # if not is_version_format(install_version):
+    #     if check == False:
+    #         print()
+    #         cm.msgWarning("It is not possible to recover the last install version.")
+    #     return "99.99.99"
     
     v1 = LooseVersion(install_version)
     v2 = LooseVersion(github_version)
 
-    if check == True:
-        if v2 > v1 :
-            return github_version
-        else:
-            return False
+    if v2 > v1 :
+        return github_version
     else:
+        return "99.99.99"
+        
+
+def version(check=True):
+    
+    # github_version = get_latest_release().replace("Release ","")
+    # install_version= get_install_release()
+
+    # if not is_version_format(github_version):
+    #     if check == False:
+    #         print()
+    #         cm.msgWarning("It is not possible to recover the last published version.")
+    #     return "99.99.99"
+    # if not is_version_format(install_version):
+    #     if check == False:
+    #         print()
+    #         cm.msgWarning("It is not possible to recover the last install version.")
+    #     return "99.99.99"
+    
+    # v1 = LooseVersion(install_version)
+    # v2 = LooseVersion(github_version)
+
+    # if check == True:
+    #     if v2 > v1 :
+    #         return github_version
+    #     else:
+    #         return False
+    # else:
+    if check_version() != "99.99.99":
         SETUP = os.getenv("CPCREADY") + "/setup.sh"
         cmd = [SETUP, "upgrade"]
 
@@ -138,6 +165,8 @@ def version(check=True):
         if codigo_salida != 0:
             print()
             cm.msgError("Updating the version of CPCReady.")
+    else:
+        cm.msgCustom("UPDGRADE"," CPCReady is updated.","green")
 
  
     

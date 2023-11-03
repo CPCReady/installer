@@ -69,8 +69,8 @@ def show(description = True):
 #     CPC6128 = f"""[bold white]{Linea1}[/]┌─────────────┐  ENC.
 # [bold white]{Linea2}[/]│[red] ███ [green]███ [blue]███ [white]│  [green]▄▄▄[/green]
 # [bold white]{Linea3}[/]└─────────────┘"""
-    check_version = str(update.version())
-    if check_version != "99.99.99":
+    check_version_local = update.check_version()
+    if not check_version_local == "99.99.99":
         new_version= f"👋 New version {check_version} found. Please Upgrade.!!![/]"
     else:
         new_version=""
