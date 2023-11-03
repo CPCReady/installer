@@ -36,7 +36,7 @@ echo "$1" > RELEASE
 echo "__version__ = '$1'" > tools/sdk/CPCReady/__init__.py
 
 git add .
-git commit -m "Change Release file"
+git commit -m "Publish Release $1 ($PUBLISH_DATE)"
 git push
 
 git tag $1 -m "Publish Release $1 ($PUBLISH_DATE)"

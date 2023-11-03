@@ -31,7 +31,7 @@ jobs:
             [ -d .github ] && rm -r .github
             [ -d .vscode ] && rm -r .vscode
             [ -d .devcontainer ] && rm -r .devcontainer
-            zip --junk-paths CPCReady-Installer *.*
+            zip -r CPCReady-Installer.zip .
         - name: Archive code coverage results
           uses: actions/upload-artifact@v3
           with:
