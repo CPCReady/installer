@@ -25,8 +25,6 @@ def is_version_format(version):
     else:
         return False
 
-
-
 ##
 # check upgrade version
 #
@@ -48,7 +46,6 @@ def check_upgrade (version_repo):
                 return True
     else:
         return
-
 
 ##
 # Get latest release
@@ -79,16 +76,23 @@ def get_install_release ():
     else:
         return "NONE"
 
-
+##
+# upgrade version
+#
+# @param check: if true only check / if false upgrade version
+##
 def version(check=True):
     
     github_version = get_latest_release()
     install_version= get_install_release()
     
-    github_version ="0.0.1"
     if not is_version_format(github_version):
+        print()
+        cm.msgWarning("It is not possible to recover the last published version.")
         return True
     if not is_version_format(install_version):
+        print()
+        cm.msgWarning("It is not possible to recover the last install version.")
         return True
     
     v1 = LooseVersion(install_version)
@@ -104,20 +108,13 @@ def version(check=True):
         cmd = [SETUP, "upgrade"]
 
         proceso = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True)
-
-        # Leer y mostrar la salida línea por línea
         for linea in proceso.stdout:
-            print(linea, end="")  # Utiliza end="" para evitar saltos de línea adicionales
+            print(linea, end="") 
 
-        # Esperar a que el proceso termine
         proceso.wait()
-
-        # Capturar el código de salida del proceso
         codigo_salida = proceso.returncode
-
-        # try:
-        #     output = subprocess.check_output(cmd, stderr=subprocess.STDOUT, universal_newlines=True)
-        #     return True
-        # except subprocess.CalledProcessError as e:
-        #     cm.msgError(f'Error executing upgrade: {e.output.decode()}')   
+        if codigo_salida != 0:
+            print()
+            cm.msgError("Updating the version of CPCReady.")
+ 
     
