@@ -64,11 +64,10 @@ def screen(image, mode, out, dsk):
     screens.create(image, mode, out, dsk)
 
 @main.command()
-@click.option("-n", "--name", type=click.STRING, help="Project's name.",required=True)
 
-def project(name):
+def project():
     """ Create the project structure for CPCReady. """
-    projects.create(name)
+    projects.create()
 
 @main.command()
 @click.option("-s", "--scope",  default="all", type=click.Choice(["dsk","cdt","all"]), help="Scope of creating disk and tape images.",required=False)

@@ -51,7 +51,7 @@
             "env": {
                 "PYTHONPATH": "${workspaceFolder}",
             },
-            "args": ["project","--name", "${env:PROJECT_TEST}"] 
+            "args": ["project"] 
         },
         {
             "name": "CPC RUN (WEB)",

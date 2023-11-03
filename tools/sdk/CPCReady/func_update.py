@@ -87,12 +87,14 @@ def version(check=True):
     install_version= get_install_release()
     
     if not is_version_format(github_version):
-        print()
-        cm.msgWarning("It is not possible to recover the last published version.")
+        if check == False:
+            print()
+            cm.msgWarning("It is not possible to recover the last published version.")
         return True
     if not is_version_format(install_version):
-        print()
-        cm.msgWarning("It is not possible to recover the last install version.")
+        if check == False:
+            print()
+            cm.msgWarning("It is not possible to recover the last install version.")
         return True
     
     v1 = LooseVersion(install_version)
