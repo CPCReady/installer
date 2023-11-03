@@ -19,7 +19,7 @@ logging.getLogger("requests").setLevel(logging.WARNING)
 
 @click.group()
 def main():
-    """ CLI Software Developer Kit for programming in Amstrad Basic and Ugbasic. """
+    """ CLI SDK for programming in Amstrad Locomotive Basic and Compiled Basic with Ugbasic. """
 
 @main.command()
 @click.option('--file', '-f',required=False, help="File with emulator configurations")
