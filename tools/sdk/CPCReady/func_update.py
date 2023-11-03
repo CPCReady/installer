@@ -103,7 +103,7 @@ def get_install_release ():
 ##
 def version(check=True):
     
-    github_version = get_latest_release()
+    github_version = get_latest_release().replace("Release ","")
     install_version= get_install_release()
 
     if not is_version_format(github_version):
