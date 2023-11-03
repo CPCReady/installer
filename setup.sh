@@ -151,7 +151,6 @@ if [ "$INSTALL" == "upgrade" ]; then
     echo "${BLUE}UPDATE   ${NC} - $upgrade"
 else
     echo "${BLUE}INFO     ${NC}The application is updated"
-    exit
 
 fi
 
