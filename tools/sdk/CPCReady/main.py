@@ -8,8 +8,12 @@ from CPCReady import func_screen as screens
 from CPCReady import func_project as projects
 from CPCReady import func_build as compile
 from CPCReady import func_info as information
+from CPCReady import func_update as update
 from CPCReady import common as cm
-
+import logging
+import requests
+requests.packages.urllib3.disable_warnings()
+logging.getLogger("requests").setLevel(logging.WARNING)
 
 @click.group()
 def main():
@@ -82,6 +86,16 @@ def info():
     """ Show infor CPCReady. """
     try:
         information.show()
+    except Exception as e:
+        raise Exception(f"Error {str(e)}")
+
+
+@main.command()
+
+def upgrade():
+    """ Upgrade CPCReady. """
+    try:
+        update.version(False)
     except Exception as e:
         raise Exception(f"Error {str(e)}")
 

@@ -8,6 +8,8 @@ from rich.table import Table
 from rich import print
 from rich.columns import Columns
 from CPCReady import common as cm
+from CPCReady import func_update as update
+
 import sys
 import os
 import random
@@ -63,4 +65,6 @@ def show(description="👉 Development Environment for User"):
         sys.exit(1)
 
     console.print(BANNER)
+    update.version()
+    
     

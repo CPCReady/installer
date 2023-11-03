@@ -4,3 +4,5 @@ rich
 jinja2
 emoji
 requests
+packaging
+inquirer

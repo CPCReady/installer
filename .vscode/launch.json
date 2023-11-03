@@ -148,6 +148,18 @@
                 "PYTHONPATH": "${workspaceFolder}",
             },
             "args": ["sprite","--image", "/workspaces/installer/tools/sdk/testing000/img/avatar.png","--mode", "0","--out","testing001","--height","12", "--width","12"] 
+        },
+        {
+            "name": "CPC UPGRADE",
+            "type": "python",
+            "request": "launch",
+            "module": "CPCReady.main",
+            "cwd": "${workspaceFolder}/tools/sdk",
+            "justMyCode": true,
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}",
+            },
+            "args": ["upgrade"] 
         }
     ]
 }

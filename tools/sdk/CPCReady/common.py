@@ -6,7 +6,7 @@ import time
 import logging
 import shutil
 import configparser
-from rich.console import Console
+
 from rich.logging import RichHandler
 from rich.text import Text
 from rich.console import Console
@@ -107,6 +107,8 @@ CONVERSION_PALETTE = {
     "COLOR_25":"RGB(255,255,128)",
     "COLOR_26":"RGB(255,255,255)"
 }
+
+
 
 
 

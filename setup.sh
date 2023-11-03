@@ -25,7 +25,7 @@ GRAY=$(tput setaf 8)
 NC=$(tput sgr0)  # No Color
 cpcready_path="tools/sdk"
 
-VERSION=$(cat VERSION)
+VERSION=$(cat RELEASE)
 VERSION_RETROVIRTUALMACHINE="2.0.beta-1.r7"
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 PATH_INSTALL="$SCRIPT_DIR"
@@ -132,7 +132,7 @@ del_temporal_files() {
 
 
 get_repo_version() {
-    url_version="https://raw.githubusercontent.com/CPCReady/installer/main/VERSION"
+    url_version="https://raw.githubusercontent.com/CPCReady/installer/main/RELEASE"
     publishversion=$(curl -s "$url_version")
     if [ -z "$publishversion" ]; then
         echo "${RED}ERROR    ${NC}Could not obtain the latest published version"
