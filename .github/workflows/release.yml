@@ -45,7 +45,7 @@ jobs:
           with:
             tag_name: ${{ steps.set_env_var.outputs.version }}
             release_name: Release ${{ steps.set_env_var.outputs.version }}
-            body_path: versions/${{ steps.set_env_var.outputs.version }}.md
+            body_path: .versions/${{ steps.set_env_var.outputs.version }}.md
             # body: |
             #     Changes Version ${{ steps.set_env_var.outputs.RELEASEBODY }}
             draft: false
