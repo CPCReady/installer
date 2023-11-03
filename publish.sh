@@ -7,7 +7,7 @@ generateChanges() {
         rm $archivo_concatenado
     fi
     archivos=$(find "$carpeta" -type f -exec ls -t -p "{}" + | awk '{print $NF}')
-    echo "## Historial de Cambios" > "$archivo_concatenado"
+    echo "# Historial de Cambios" > "$archivo_concatenado"
     for archivo in $archivos; do
         cat "$archivo" >> "$archivo_concatenado"
     done
