@@ -15,6 +15,8 @@ import requests
 requests.packages.urllib3.disable_warnings()
 logging.getLogger("requests").setLevel(logging.WARNING)
 
+@click.version_option(version=__version__)
+
 @click.group()
 def main():
     """ CLI Software Developer Kit for programming in Amstrad Basic and Ugbasic. """
@@ -90,7 +92,6 @@ def info():
 
 
 @main.command()
-
 def upgrade():
     """ Upgrade CPCReady. """
     try:
