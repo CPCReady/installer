@@ -8,16 +8,23 @@ from CPCReady import func_screen as screens
 from CPCReady import func_project as projects
 from CPCReady import func_build as compile
 from CPCReady import func_info as information
+from CPCReady import func_update as update
 from CPCReady import common as cm
+import logging
+import requests
 
+requests.packages.urllib3.disable_warnings()
+logging.getLogger("requests").setLevel(logging.WARNING)
+
+@click.version_option(version=__version__)
 
 @click.group()
 def main():
-    """ CLI Software Developer Kit for programming in Amstrad Basic and Ugbasic. """
+    """ CLI SDK for programming in Amstrad Locomotive Basic and Compiled Basic with Ugbasic. """
 
 @main.command()
-@click.option('--file', '-f',required=False, help="File with emulator configurations")
-@click.option('--setting', '-s',required=True, help="Emulator Settings Name")
+@click.option('--file', '-f',   required=False, help="File with emulator configurations")
+@click.option('--setting', '-s',required=True,  help="Emulator Settings Name")
 
 def run(file, setting):
     """ Execute DSK/CDT in emulator. """
@@ -60,11 +67,10 @@ def screen(image, mode, out, dsk):
     screens.create(image, mode, out, dsk)
 
 @main.command()
-@click.option("-n", "--name", type=click.STRING, help="Project's name.",required=True)
 
-def project(name):
+def project():
     """ Create the project structure for CPCReady. """
-    projects.create(name)
+    projects.create()
 
 @main.command()
 @click.option("-s", "--scope",  default="all", type=click.Choice(["dsk","cdt","all"]), help="Scope of creating disk and tape images.",required=False)
@@ -81,7 +87,16 @@ def build(scope):
 def info():
     """ Show infor CPCReady. """
     try:
-        information.show()
+        information.show(True)
+    except Exception as e:
+        raise Exception(f"Error {str(e)}")
+
+
+@main.command()
+def upgrade():
+    """ Upgrade CPCReady. """
+    try:
+        update.version(False)
     except Exception as e:
         raise Exception(f"Error {str(e)}")
 

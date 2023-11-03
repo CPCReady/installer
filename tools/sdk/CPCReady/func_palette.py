@@ -51,8 +51,9 @@ def getData(filename, mode,api=False):
     ########################################
     
     if api == False:
-        info.show("IMAGE FILE: " + cm.getFileExt(filename))
-    cm.showInfoTask(f"Get data from image palette...")
+        #info.show("👉 IMAGE FILE: " + cm.getFileExt(filename))
+        info.show(False)
+    cm.showInfoTask(f"Get palette from "+ cm.getFileExt(filename) +"...")
     try:
         subprocess.check_output(cmd, stderr=subprocess.DEVNULL)
     except subprocess.CalledProcessError as e:

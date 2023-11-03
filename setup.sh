@@ -25,9 +25,10 @@ GRAY=$(tput setaf 8)
 NC=$(tput sgr0)  # No Color
 cpcready_path="tools/sdk"
 
-VERSION=$(cat VERSION)
+
 VERSION_RETROVIRTUALMACHINE="2.0.beta-1.r7"
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+VERSION=$(cat $SCRIPT_DIR/RELEASE)
 PATH_INSTALL="$SCRIPT_DIR"
 PATH_CPCREADY="$SCRIPT_DIR/tools/sdk"
 PATH_CPCREADY_DIST="$SCRIPT_DIR/tools/sdk/dist"
@@ -130,57 +131,28 @@ del_temporal_files() {
     fi
 }
 
-
-get_repo_version() {
-    url_version="https://raw.githubusercontent.com/CPCReady/installer/main/VERSION"
-    publishversion=$(curl -s "$url_version")
-    if [ -z "$publishversion" ]; then
-        echo "${RED}ERROR    ${NC}Could not obtain the latest published version"
-        exit 1
-    fi
-}
-
-compare_versions() {
-    
-    get_repo_version
-
-    local v1=$1
-    local v2=$2
-
-    IFS='.' read -ra arr1 <<< "$v1"
-    IFS='.' read -ra arr2 <<< "$v2"
-
-    for i in "${!arr1[@]}"; do
-        if [ "${arr1[i]}" -lt "${arr2[i]}" ]; then
-            return 0
-        elif [ "${arr1[i]}" -gt "${arr2[i]}" ]; then
-            return 1
-        fi
-    done
-
-}
-
 ##################################
 # CHECK NEW VERSION
 ##################################
 
 if [ "$INSTALL" == "upgrade" ]; then
+
     echo "${BLUE}INFO     ${NC}Checking new version...🍺"
+    echo "${BLUE}INFO     ${NC} - New version found"
+    echo "${BLUE}UPDATE   ${NC} - Get started update software."
+    check_requirements "git"
+    upgrade=$(git pull)
+    texto_to_check="Already up to date"
 
-    # Obtenemos version del repositorio.
-    get_repo_version
-
-    # comparamos con version instalada.
-    if ! compare_versions "$publishversion" "$VERSION"; then
-        echo "${BLUE}INFO     ${NC} - New version $publishversion found"
-        echo "${BLUE}UPDATE   ${NC} - Get started update software."
-        check_requirements "git"
-        upgrade=$(git pull)
-        echo "${BLUE}UPDATE   ${NC} - $upgrade"
-    else
-        echo "${BLUE}INFO     ${NC}The application is updated"
-        exit
+    if [[ $upgrade == *$texto_to_check* ]]; then
+        echo "${BLUE}INFO     ${NC} - No need to update."
+        exit 0
     fi
+    echo "${BLUE}UPDATE   ${NC} - $upgrade"
+else
+    echo "${BLUE}INFO     ${NC}The application is updated"
+    exit
+
 fi
 
 ##################################
