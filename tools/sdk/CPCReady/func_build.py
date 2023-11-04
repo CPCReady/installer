@@ -405,7 +405,7 @@ def check_nomenclature63(path):
     try:
         archivos = os.listdir(path)
         for archivo in archivos:
-            if len(archivo) > 6:
+            if len(cm.getFile(archivo)) > 6:
                 return False
         return True
     except FileNotFoundError:
