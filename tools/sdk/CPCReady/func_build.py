@@ -232,6 +232,8 @@ def compileUGBasic(source, out):
         if not os.path.isfile(cm.PWD + "/main.bin"):
             cm.msgError ("Create bin: " + str(output))
             sys.exit(1)
+        else:
+            os.remove(cm.PWD + "/main.bin")
         
         name = cm.getFile(source)
         if extractUGBC2ImageDisc(out):
@@ -241,6 +243,7 @@ def compileUGBasic(source, out):
         else:
             cm.showFoodDataProject("Build failure disc image", 1) 
         return True
+    
     except subprocess.CalledProcessError as e:
         cm.msgError(cm.getFileExt(source) + f' ==> Error executing command: {e.output.decode()}')
         return False
