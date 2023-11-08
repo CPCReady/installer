@@ -160,6 +160,23 @@
                 "PYTHONPATH": "${workspaceFolder}",
             },
             "args": ["upgrade"] 
+        },
+        {
+            "name": "Python: Test CPCReady",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/tools/sdk/test/test.py",
+            "args": [
+                "discover",
+                "-p",
+                "*test*.py"
+            ],
+            "cwd": "${workspaceFolder}",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}"
+            },
+            "console": "integratedTerminal"
         }
+ 
     ]
 }
