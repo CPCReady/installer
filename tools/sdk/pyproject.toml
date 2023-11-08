@@ -1,9 +1,13 @@
 [tool.poetry]
-name = "cpcready"
+name = "CPCReady"
 version = "0.0.1"
 description = "SDK for programing in basic and Basic compile ugbasic"
-authors = ["david chivato de la fuente <105808314+destroyer-dcf@users.noreply.github.com>"]
+authors = ["david chivato de la fuente <destroyer.dcf@gmail.com>"]
 readme = "README.md"
+
+packages = [
+    { include = "CPCReady" }
+]
 
 [tool.poetry.dependencies]
 python = "^3.8"

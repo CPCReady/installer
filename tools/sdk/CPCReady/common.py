@@ -340,7 +340,7 @@ def readProjectIni(file):
     return diccionario
 
 
-def crear_entrada_ini(ruta_archivo, seccion, clave, valor):
+def create_entry_ini(ruta_archivo, seccion, clave, valor):
     config = configparser.ConfigParser()
     config.read(ruta_archivo)
     if seccion not in config.sections():
