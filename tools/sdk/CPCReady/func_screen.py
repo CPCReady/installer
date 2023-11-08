@@ -1,22 +1,3 @@
-##-----------------------------LICENSE NOTICE------------------------------------
-##  CPCReady: SDK for programming in Locomotive Amstrad Basic and Basic Compiled
-##            with Ugbasic (https://ugbasic.iwashere.eu/)
-##
-##  Copyright (C) 2023 destroyer
-##
-##  This program is free software: you can redistribute it and/or modify
-##  it under the terms of the GNU Lesser General Public License as published by
-##  the Free Software Foundation, either version 3 of the License, or
-##  (at your option) any later version.
-##
-##  This program is distributed in the hope that it will be useful,
-##  but WITHOUT ANY WARRANTY; without even the implied warranty of
-##  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-##  GNU Lesser General Public License for more details.
-##
-##  You should have received a copy of the GNU Lesser General Public License
-##  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-##------------------------------------------------------------------------------
 
 import os
 import sys
@@ -26,6 +7,7 @@ import shutil
 import json
 from CPCReady import common as cm
 from CPCReady import func_info as info
+
 
 ##
 # Create SCR image
@@ -38,7 +20,6 @@ from CPCReady import func_info as info
 ##
 
 def create(filename, mode, fileout, dsk, api=False):
-    
     ########################################
     # VARIABLES
     ########################################
@@ -56,8 +37,8 @@ def create(filename, mode, fileout, dsk, api=False):
     IMAGE_TMP_JSON = IMAGE_TEMP_PATH + "/" + IMAGE_TMP_FILE + ".json"
 
     if len(IMAGE_TMP_FILE) > 6:
-        IMAGE_TMP_FILE =  IMAGE_TMP_FILE[:6]
-        
+        IMAGE_TMP_FILE = IMAGE_TMP_FILE[:6]
+
     ########################################
     # DELETE TEMPORAL FILES
     ########################################
@@ -75,7 +56,7 @@ def create(filename, mode, fileout, dsk, api=False):
     if api == False:
         # info.show("👉 CONVER IMAGE: " + cm.getFileExt(filename))
         info.show(False)
-    cm.showInfoTask(f"Conver "+ cm.getFileExt(filename)+" to scr...")
+    cm.showInfoTask(f"Conver " + cm.getFileExt(filename) + " to scr...")
 
     try:
         if fileout:
@@ -85,7 +66,8 @@ def create(filename, mode, fileout, dsk, api=False):
             if not dsk:
                 shutil.copy2(os.path.join(IMAGE_TEMP_PATH, IMAGE_TMP_FILE.upper() + '.PAL'), fileout)
                 shutil.copy2(os.path.join(IMAGE_TEMP_PATH, IMAGE_TMP_FILE.upper() + '.SCR'), fileout)
-                cm.msgCustom("CONVERT", f"{cm.getFileExt(filename)} ==> " + cm.getFileExt(fileout + "/" + IMAGE_TMP_FILE.upper() + ".SCR"), "green")
+                cm.msgCustom("CONVERT", f"{cm.getFileExt(filename)} ==> " + cm.getFileExt(
+                    fileout + "/" + IMAGE_TMP_FILE.upper() + ".SCR"), "green")
         else:
             subprocess.check_output(cmd, stderr=subprocess.DEVNULL)
     except subprocess.CalledProcessError as e:
@@ -95,13 +77,13 @@ def create(filename, mode, fileout, dsk, api=False):
         ########################################
 
         cm.rmFolder(IMAGE_TEMP_PATH)
-        
+
         if dsk:
             if api == False:
-                cm.showFoodDataProject(f"Failed to create scr in dsk image file.",1)
+                cm.showFoodDataProject(f"Failed to create scr in dsk image file.", 1)
         else:
             if api == False:
-                cm.showFoodDataProject(f"Failed to convert image.",1)
+                cm.showFoodDataProject(f"Failed to convert image.", 1)
             return False
 
     ########################################
@@ -114,11 +96,11 @@ def create(filename, mode, fileout, dsk, api=False):
     sw_palette = str(data['palette'])
     hw_palette = str(data['hardwarepalette'])
     ugBasic_palette = []
-    
+
     for color in data['palette']:
         palette_amstrad = cm.CONVERSION_PALETTE.get("COLOR_" + color)
         ugBasic_palette.append(palette_amstrad)
-    
+
     ug_palette = str(ugBasic_palette)
 
     ########################################
@@ -130,12 +112,12 @@ def create(filename, mode, fileout, dsk, api=False):
             os.makedirs(fileout)
         shutil.copy2(os.path.join(IMAGE_TEMP_PATH, IMAGE_TMP_FILE.upper() + '.DSK'),
                      fileout + '/' + IMAGE_TMP_FILE.upper() + '.DSK')
-        cm.msgCustom("CREATE", f"{cm.getFile(filename).upper()}.SCR ==> {fileout}/{IMAGE_TMP_FILE.upper()}.DSK", "green")
+        cm.msgCustom("CREATE", f"{cm.getFile(filename).upper()}.SCR ==> {fileout}/{IMAGE_TMP_FILE.upper()}.DSK",
+                     "green")
 
     cm.msgCustom("GET", f"Software Palette: {sw_palette}", "green")
     cm.msgCustom("GET", f"Hardware Palette: {hw_palette}", "green")
     cm.msgCustom("GET", f"Ugbasic  Palette: {ug_palette}", "green")
-
 
     ########################################
     # DELETE TEMPORAL FILES
@@ -153,7 +135,5 @@ def create(filename, mode, fileout, dsk, api=False):
     else:
         if api == False:
             cm.showFoodDataProject(f"Image conversion done successfully.", 0)
-    
+
     return True
-
-

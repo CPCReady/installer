@@ -1,22 +1,3 @@
-##-----------------------------LICENSE NOTICE------------------------------------
-##  CPCReady: SDK for programming in Locomotive Amstrad Basic and Basic Compiled
-##            with Ugbasic (https://ugbasic.iwashere.eu/)
-##
-##  Copyright (C) 2023 destroyer
-##
-##  This program is free software: you can redistribute it and/or modify
-##  it under the terms of the GNU Lesser General Public License as published by
-##  the Free Software Foundation, either version 3 of the License, or
-##  (at your option) any later version.
-##
-##  This program is distributed in the hope that it will be useful,
-##  but WITHOUT ANY WARRANTY; without even the implied warranty of
-##  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-##  GNU Lesser General Public License for more details.
-##
-##  You should have received a copy of the GNU Lesser General Public License
-##  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-##------------------------------------------------------------------------------
 
 import os
 import sys
@@ -26,6 +7,7 @@ import shutil
 import json
 from CPCReady import common as cm
 from CPCReady import func_info as info
+
 
 ##
 # Create SCR image
@@ -37,8 +19,7 @@ from CPCReady import func_info as info
 # @param api: function in code o out
 ##
 
-def getData(filename, mode,api=False):
-    
+def getData(filename, mode, api=False):
     ########################################
     # VARIABLES
     ########################################
@@ -56,8 +37,8 @@ def getData(filename, mode,api=False):
     IMAGE_TMP_JSON = IMAGE_TEMP_PATH + "/" + IMAGE_TMP_FILE + ".json"
 
     if len(IMAGE_TMP_FILE) > 6:
-        IMAGE_TMP_FILE =  IMAGE_TMP_FILE[:6]
-        
+        IMAGE_TMP_FILE = IMAGE_TMP_FILE[:6]
+
     ########################################
     # DELETE TEMPORAL FILES
     ########################################
@@ -69,11 +50,11 @@ def getData(filename, mode,api=False):
     ########################################
     # EXECUTE MARTINE
     ########################################
-    
+
     if api == False:
-        #info.show("👉 IMAGE FILE: " + cm.getFileExt(filename))
+        # info.show("👉 IMAGE FILE: " + cm.getFileExt(filename))
         info.show(False)
-    cm.showInfoTask(f"Get palette from "+ cm.getFileExt(filename) +"...")
+    cm.showInfoTask(f"Get palette from " + cm.getFileExt(filename) + "...")
     try:
         subprocess.check_output(cmd, stderr=subprocess.DEVNULL)
     except subprocess.CalledProcessError as e:
@@ -83,7 +64,6 @@ def getData(filename, mode,api=False):
         ########################################
 
         cm.rmFolder(IMAGE_TEMP_PATH)
-        
 
     ########################################
     # READ JSON PALETTE
@@ -95,11 +75,11 @@ def getData(filename, mode,api=False):
     sw_palette = str(data['palette'])
     hw_palette = str(data['hardwarepalette'])
     ugBasic_palette = []
-    
+
     for color in data['palette']:
         palette_amstrad = cm.CONVERSION_PALETTE.get("COLOR_" + color)
         ugBasic_palette.append(palette_amstrad)
-    
+
     ug_palette = str(ugBasic_palette)
 
     ########################################
@@ -121,7 +101,5 @@ def getData(filename, mode,api=False):
     ########################################
 
     cm.showFoodDataProject(f"Successfully obtained image palette.", 0)
-    
+
     return True
-
-
