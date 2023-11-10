@@ -4,6 +4,15 @@ version = "0.0.1"
 description = "SDK for programing in basic and Basic compile (ugbasic)"
 authors = ["Destroyer <destroyer.dcf@gmail.com>"]
 readme = "README.md"
+license = "GPL-3.0-or-later"
+homepage = "https://python-poetry.org/"
+repository = "https://github.com/python-poetry/poetry"
+documentation = "https://python-poetry.org/docs/"
+keywords = ["packaging", "cpcready","amstrad","programing"]
+classifiers = [
+    "Topic :: Software Development :: Build Tools",
+    "Topic :: Software Development :: Libraries :: Python Modules"
+]
 
 packages = [
     { include = "CPCReady" }
@@ -19,6 +28,10 @@ packaging = ">=23.2,<24.0"
 inquirer = ">=3.1.3,<3.2.0"
 setuptools = ">=68.2.2,<68.3.0"
 
+[tool.poetry.scripts]
+cpcr     = "CPCReady.main:main"
+cpc      = "CPCReady.main:main"
+cpcready = "CPCReady.main:main"
 
 [build-system]
 requires = ["poetry-core"]

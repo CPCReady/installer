@@ -1,0 +1,79 @@
+Tengo un proyecto python con poetry que tiene esta estructura
+
+.
+├── CPCReady
+│   ├── __init__.py
+│   ├── binary
+│   │   ├── 2cdt
+│   │   ├── amsdos
+│   │   ├── cpc2cdt
+│   │   ├── iDSK
+│   │   ├── martine
+│   │   ├── ugbc
+│   │   └── xfer
+│   ├── common.py
+│   ├── func_build.py
+│   ├── func_info.py
+│   ├── func_palette.py
+│   ├── func_project.py
+│   ├── func_run.py
+│   ├── func_screen.py
+│   ├── func_sprite.py
+│   ├── func_update.py
+│   ├── main.py
+│   └── z88dk
+│       ├── bin
+│       │   ├── z80asm
+│       │   ├── z88dk-appmake
+│       │   ├── z88dk-asmpp
+│       │   ├── z88dk-asmstyle
+│       │   ├── z88dk-basck
+│       │   ├── z88dk-copt
+│       │   ├── z88dk-dis
+│       │   ├── z88dk-dzx0
+│       │   ├── z88dk-dzx7
+│       │   ├── z88dk-font2pv1000
+│       │   ├── z88dk-gdb
+│       │   ├── z88dk-lib
+│       │   ├── z88dk-sccz80
+│       │   ├── z88dk-ticks
+│       │   ├── z88dk-ucpp
+│       │   ├── z88dk-z80asm
+│       │   ├── z88dk-z80nm
+│       │   ├── z88dk-z80svg
+│       │   ├── z88dk-zobjcopy
+│       │   ├── z88dk-zpragma
+│       │   ├── z88dk-zsdcc
+│       │   ├── z88dk-zx0
+│       │   ├── z88dk-zx7
+│       │   └── zcc
+│       └── lib
+│           ├── README
+│           ├── arch
+│           │   ├── 8085
+│           │   │   └── 8085_rules.1
+│           │   ├── ez80
+│           │   │   └── ez80_rules.1
+│           │   ├── gbz80
+│           │   │   └── gbz80_rules.1
+│           │   ├── kc160
+│           │   │   └── kc160_rules.1
+│           │   ├── rabbit
+│           │   │   └── rabbit_rules.1
+│           │   ├── z180
+│           │   │   └── z180_rules.1
+│           │   └── z80n
+│           │       └── z80n_rules.1
+├── LICENSE
+├── README.md
+├── poetry.lock
+├── pyproject.toml
+├── setup.py
+├── test
+│   ├── __init__.py
+│   ├── data
+│   ├── test_0.py
+│   └── test_1.py
+└── testing000
+
+Si desde uno de mis scripts python... por ejemplo commom.py quisiera ejecutar alguno de los archivos de la carpeta binary por ejemplo iDSK como lo haria?
