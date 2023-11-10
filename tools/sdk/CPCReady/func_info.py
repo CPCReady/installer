@@ -51,7 +51,7 @@ def show(description=True):
     # [bold white]{Linea3}[/]└─────────────┘"""
     check_version_local = update.check_version()
     if not check_version_local == "99.99.99":
-        new_version = f"👋 New version {check_version} found. Please Upgrade.!!![/]"
+        new_version = f"👋 New version {check_version_local} found. Please Upgrade.!!![/]"
     else:
         new_version = ""
 

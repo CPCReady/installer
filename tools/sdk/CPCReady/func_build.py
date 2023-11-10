@@ -11,6 +11,10 @@ from CPCReady import func_sprite as sprites
 from CPCReady import func_info as info
 
 
+module_path = os.path.dirname(os.path.abspath(__file__))
+binary_path = os.path.join(module_path, 'z88dk', 'bin')
+os.environ['PATH'] = f"{binary_path}:{os.environ['PATH']}"
+
 def create(scope):
     cm.validate_cfg(cm.CFG_PROJECT, cm.SECTIONS_PROJECT)
 
@@ -199,6 +203,9 @@ def create(scope):
 # @param out: output file name
 ##
 def compileUGBasic(source, out):
+    module_path = os.path.dirname(os.path.abspath(__file__))
+    binary_path = os.path.join(module_path, 'z88dk', 'bin')
+    os.environ['PATH'] = f"{binary_path}:{os.environ['PATH']}"
     try:
         cmd = [cm.UGBASIC, "-O", "dsk", "-o", out, source]
         output = subprocess.check_output(cmd, stderr=subprocess.STDOUT)

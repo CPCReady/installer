@@ -49,13 +49,16 @@ CPC_MODELS = ["6128", "464", "664"]
 
 if sys.platform.startswith('linux'):
     TEMP_PATH = os.getenv('HOME') + "/tmp"
-    MARTINE = os.getenv('CPCREADY') + "/tools/bin/martine"
-    IDSK = os.getenv('CPCREADY') + "/tools/bin/iDSK"
-    UGBASIC = os.getenv('CPCREADY') + "/tools/bin/ugbc"
-    AMSDOS = os.getenv('CPCREADY') + "/tools/bin/amsdos"
-    CDT = os.getenv('CPCREADY') + "/tools/bin/2cdt"
-    CPC2CDT = os.getenv('CPCREADY') + "/tools/bin/cpc2cdt"
-    M4BOARD = os.getenv('CPCREADY') + "/tools/bin/xfer"
+    MARTINE = os.path.dirname(os.path.abspath(__file__)) + "/binary/martine"
+    IDSK = os.path.dirname(os.path.abspath(__file__)) + "/binary/iDSK"
+    UGBASIC = os.path.dirname(os.path.abspath(__file__)) + "/binary/ugbc"
+    AMSDOS = os.path.dirname(os.path.abspath(__file__)) + "/binary/amsdos"
+    CDT = os.path.dirname(os.path.abspath(__file__)) + "/binary/2cdt"
+    CPC2CDT = os.path.dirname(os.path.abspath(__file__)) + "/binary/cpc2cdt"
+    M4BOARD = os.path.dirname(os.path.abspath(__file__)) + "/binary/xfer"
+    RETROVIRTUALMACHINE = os.path.dirname(os.path.abspath(__file__)) + "/binary/RetroVirtualMachine"
+
+TEMPLATES_PATH = os.path.dirname(os.path.abspath(__file__)) + "/cfg/"
 
 CONVERSION_PALETTE = {
     "COLOR_0": "RGB(0,0,0)",
@@ -106,8 +109,7 @@ CONVERSION_PALETTE = {
 # @param out: generate template directory
 ##
 def createTemplate(templateName, templateData, out):
-    APP_PATH = os.getenv('CPCREADY')
-    with open(APP_PATH + f"/cfg/{templateName}.j2", 'r') as file:
+    with open(TEMPLATES_PATH + f"{templateName}.j2", 'r') as file:
         template_string = file.read()
     template = Template(template_string)
     rendered_template = template.render(templateData)

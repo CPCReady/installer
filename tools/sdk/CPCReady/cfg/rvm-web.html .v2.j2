@@ -1,0 +1,77 @@
+<!-- ;-----------------------------LICENSE NOTICE------------------------------------
+;  CPCReady: SDK for programming in Locomotive Amstrad Basic and Basic Compiled
+;            with Ugbasic (https://ugbasic.iwashere.eu/)
+;
+;  Copyright (C) 2023 destroyer
+;
+;  This program is free software: you can redistribute it and/or modify
+;  it under the terms of the GNU Lesser General Public License as published by
+;  the Free Software Foundation, either version 3 of the License, or
+;  (at your option) any later version.
+;
+;  This program is distributed in the hope that it will be useful,
+;  but WITHOUT ANY WARRANTY; without even the implied warranty of
+;  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;  GNU Lesser General Public License for more details.
+;
+;  You should have received a copy of the GNU Lesser General Public License
+;  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+;------------------------------------------------------------------------------ -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src='https://cdn.rvmplayer.org/rvmplayer.cpc{{ model }}.0.1.0.min.js'></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      background-color: rgb(7, 7, 7);
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden; /* Evita el desbordamiento de la imagen */
+    }
+    .background {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 1024px; /* Ancho de la imagen */
+      height: 768px; /* Altura de la imagen */
+      background: url('{{ ruta }}/monitor1.png') no-repeat center center;
+      background-size: cover;
+      filter: brightness(70%); /* Ajusta según tu preferencia de luminosidad */
+    }
+    .overlay {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 800px; /* Ancho del div blanco */
+      height: 600px; /* Altura del div blanco */
+      background-color: black; /* Color del fondo del div blanco */
+    }
+  </style>
+</head>
+<body>
+  <div class="background"></div>
+  <div class="overlay"></div>
+
+    <script>
+      const c=document.querySelector('.overlay')
+      rvmPlayer_cpc{{ model }}(c,{
+        disk: {
+          type: 'dsk',
+          url: '../{{ dsk }}',
+        },
+        command: '{{ run }}\n',
+        warpFrames: 20*50,
+        videoMode: 'hd'
+      })
+    </script>
+</body>
+</html>
